@@ -17,7 +17,6 @@
 package org.jboss.aerogear.unifiedpush.admin.ui.page;
 
 import static org.jboss.aerogear.unifiedpush.admin.ui.utils.WebElementUtils.clearNfill;
-import static org.jboss.arquillian.graphene.Graphene.guardXhr;
 import static org.jboss.arquillian.graphene.Graphene.waitModel;
 
 import java.io.File;
@@ -57,14 +56,11 @@ public class VariantRegistrationPage extends PushServerAdminUiPage {
     @FindBy(jquery = "div.rcue-dialog-inner form section:eq(1) input[type=\"checkbox\"]")
     private WebElement IOS_PRODUCTION_FLAG_CHECKBOX;
 
-    @FindBy(jquery = "div.rcue-dialog-inner form section:eq(2) input[type=\"text\"]")
-    private WebElement SIMPLE_PUSH_NETWORK_URL;
-
     public void registerAndroidVariant(String name, String desc, String googleApiKey) {
         fillVariantDetails(name, desc);
         selectPlatform(PLATFORM.ANDROID);
         clearNfill(GOOGLE_API_KEY_INPUT_FIELD, googleApiKey);
-        submitFormXHR();
+        submitForm();
     }
 
     public void registeriOSVariant(String name, String desc, String appleCertPath, String passphrase, boolean isProd) {
@@ -76,18 +72,17 @@ public class VariantRegistrationPage extends PushServerAdminUiPage {
         if ((isProd && !IOS_PRODUCTION_FLAG_CHECKBOX.isSelected()) || (!isProd && IOS_PRODUCTION_FLAG_CHECKBOX.isSelected())) {
             IOS_PRODUCTION_FLAG_CHECKBOX.click();
         }
-        submitFormXHR();
+        submitForm();
     }
 
-    public void registerSimplePushVariant(String name, String desc, String networkURL) {
+    public void registerSimplePushVariant(String name, String desc) {
         fillVariantDetails(name, desc);
         selectPlatform(PLATFORM.SIMPLE_PUSH);
-        clearNfill(SIMPLE_PUSH_NETWORK_URL, networkURL);
-        submitFormXHR();
+        submitForm();
     }
 
-    private void submitFormXHR() {
-        guardXhr(SUBMIT_BUTTON).click();
+    private void submitForm() {
+        SUBMIT_BUTTON.click();
     }
 
     private static enum PLATFORM {

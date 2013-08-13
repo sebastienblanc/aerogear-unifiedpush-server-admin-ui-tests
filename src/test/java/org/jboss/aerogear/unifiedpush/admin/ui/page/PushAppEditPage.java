@@ -19,7 +19,6 @@ package org.jboss.aerogear.unifiedpush.admin.ui.page;
 import static org.jboss.aerogear.unifiedpush.admin.ui.utils.StringUtilities.isEmpty;
 import static org.jboss.aerogear.unifiedpush.admin.ui.utils.WebElementUtils.clearNfill;
 import static org.jboss.arquillian.graphene.Graphene.element;
-import static org.jboss.arquillian.graphene.Graphene.guardXhr;
 import static org.jboss.arquillian.graphene.Graphene.waitModel;
 
 import org.jboss.arquillian.graphene.enricher.findby.FindBy;
@@ -58,7 +57,7 @@ public class PushAppEditPage extends PushServerAdminUiPage {
 
     public void registerNewPushApp(String name, String desc) {
         fillForm(name, desc);
-        guardXhr(SUBMIT_BUTTON).click();
+        SUBMIT_BUTTON.click();
     }
 
     public void updatePushApp(String name, String desc) {
@@ -68,11 +67,11 @@ public class PushAppEditPage extends PushServerAdminUiPage {
         if (!isEmpty(desc)) {
             clearNfill(DESCRIPTION_FIELD, desc);
         }
-        guardXhr(SUBMIT_BUTTON).click();
+        SUBMIT_BUTTON.click();
     }
 
     public void cancel() {
-        guardXhr(CANCEL_BUTTON).click();
+        CANCEL_BUTTON.click();
     }
 
     private void fillForm(String name, String desc) {
@@ -82,6 +81,7 @@ public class PushAppEditPage extends PushServerAdminUiPage {
 
     @Override
     public void waitUntilPageIsLoaded() {
+        waitModel().until(element(CANCEL_BUTTON).isVisible());
         waitModel().until(element(SUBMIT_BUTTON).isVisible());
     }
 }

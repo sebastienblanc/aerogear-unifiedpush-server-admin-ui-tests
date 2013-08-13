@@ -16,20 +16,12 @@
  */
 package org.jboss.aerogear.unifiedpush.admin.ui.page;
 
-import static org.jboss.aerogear.unifiedpush.admin.ui.utils.WebElementUtils.clearNfill;
-
-import org.jboss.arquillian.graphene.enricher.findby.FindBy;
-import org.openqa.selenium.WebElement;
 
 public class SimplePushVariantEditPage extends VariantEditPage {
-
-    @FindBy(jquery = "div.rcue-dialog-inner form section input[type=\"text\"]")
-    private WebElement SIMPLE_PUSH_NETWORK_URL;
 
     @Override
     public void updateVariant(String... input) {
         fillVariantDetails(input[0], input[1]);
-        clearNfill(SIMPLE_PUSH_NETWORK_URL, input[2]);
         submitForm();
     }
 }

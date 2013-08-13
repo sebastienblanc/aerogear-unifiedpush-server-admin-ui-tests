@@ -16,6 +16,7 @@
  */
 package org.jboss.aerogear.unifiedpush.admin.ui.page;
 
+
 public class ReLoginPage extends LoginPage {
 
     private final static String TITLE = "Please Re-Login";

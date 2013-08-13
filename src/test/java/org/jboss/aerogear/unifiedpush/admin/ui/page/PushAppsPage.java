@@ -16,15 +16,13 @@
  */
 package org.jboss.aerogear.unifiedpush.admin.ui.page;
 
-import static org.jboss.arquillian.graphene.Graphene.guardNoRequest;
-import static org.jboss.arquillian.graphene.Graphene.guardXhr;
 import static org.jboss.arquillian.graphene.Graphene.waitModel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.jboss.aerogear.unifiedpush.admin.ui.model.PushApplication;
-import org.jboss.arquillian.graphene.enricher.findby.ByJQuery;
 import org.jboss.arquillian.graphene.enricher.findby.FindBy;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -36,7 +34,7 @@ public class PushAppsPage extends PushServerAdminUiPage {
     @FindBy(jquery = "table.rcue-table")
     private WebElement PUSH_APPLICATION_TABLE;
 
-    @FindBy(jquery = "table.rcue-table thead div.topcoat-button a")
+    @FindBy(jquery = "table.rcue-table thead tr:eq(0) a")
     private WebElement CREATE_BUTTON;
 
     @FindBy(jquery = "table.rcue-table tbody tr")
@@ -53,7 +51,7 @@ public class PushAppsPage extends PushServerAdminUiPage {
     }
 
     public void pressCreateButton() {
-        guardNoRequest(CREATE_BUTTON).click();
+        CREATE_BUTTON.click();
     }
 
     public static enum PUSH_APP_LINK {
@@ -64,13 +62,13 @@ public class PushAppsPage extends PushServerAdminUiPage {
         final List<WebElement> anchors = PUSH_APPLICATION_LIST.get(rowNum).findElements(By.tagName("a"));
         switch (link) {
             case VARIANTS_PAGE:
-                guardXhr(anchors.get(0)).click();
+                anchors.get(0).click();
                 break;
             case EDIT:
-                guardNoRequest(anchors.get(1)).click();
+                anchors.get(1).click();
                 break;
             case REMOVE:
-                guardNoRequest(anchors.get(2)).click();
+                anchors.get(2).click();
                 break;
             default:
                 break;
@@ -95,7 +93,7 @@ public class PushAppsPage extends PushServerAdminUiPage {
                 final String name = tableDataList.get(0).getText();
                 final String desc = tableDataList.get(1).getText();
                 final String vars = tableDataList.get(2).getText();
-                //System.out.println("name: " + name + " desc: " + desc + " vars " + vars);
+                // System.out.println("name: " + name + " desc: " + desc + " vars " + vars);
                 pushAppList.add(new PushApplication(name, desc, Integer.valueOf(vars)));
             }
         }
@@ -120,10 +118,11 @@ public class PushAppsPage extends PushServerAdminUiPage {
     }
 
     public void waitUntilTableContainsRows(final int numOfRows) {
-        waitModel().until(new ExpectedCondition<Boolean>() {
+        waitModel().withTimeout(10, TimeUnit.SECONDS).until(new ExpectedCondition<Boolean>() {
             @Override
             public Boolean apply(WebDriver notUsed) {
-                return PUSH_APPLICATION_TABLE.findElements(ByJQuery.jquerySelector("tbody tr")).size() == numOfRows;
+                final List<WebElement> list = filterPushApplicationRows();
+                return list != null && list.size() == numOfRows;
             }
         });
     }

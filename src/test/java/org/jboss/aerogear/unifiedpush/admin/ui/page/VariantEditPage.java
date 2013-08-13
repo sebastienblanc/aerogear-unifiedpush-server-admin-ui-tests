@@ -17,7 +17,6 @@
 package org.jboss.aerogear.unifiedpush.admin.ui.page;
 
 import static org.jboss.aerogear.unifiedpush.admin.ui.utils.WebElementUtils.clearNfill;
-import static org.jboss.arquillian.graphene.Graphene.guardXhr;
 import static org.jboss.arquillian.graphene.Graphene.waitModel;
 
 import org.jboss.arquillian.graphene.enricher.findby.FindBy;
@@ -30,18 +29,18 @@ public abstract class VariantEditPage extends PushServerAdminUiPage {
 
     @FindBy(jquery = "div.rcue-dialog-inner form p:eq(1) textarea[name=\"description\"]")
     private WebElement VARIANT_DESC;
-    
+
     @FindBy(jquery = "div.rcue-dialog-inner form input[type=\"reset\"]")
     private WebElement CANCEL_BUTTON;
-    
+
     @FindBy(jquery = "div.rcue-dialog-inner form input[type=\"submit\"]")
     private WebElement SUBMIT_BUTTON;
-    
+
     public void fillVariantDetails(String name, String desc) {
         clearNfill(VARIANT_NAME, name);
         clearNfill(VARIANT_DESC, desc);
     }
-    
+
     public String getName() {
         return VARIANT_NAME.getAttribute("value");
     }
@@ -49,19 +48,19 @@ public abstract class VariantEditPage extends PushServerAdminUiPage {
     public String getDescription() {
         return VARIANT_DESC.getAttribute("value");
     }
-    
+
     public void submitForm() {
-        guardXhr(SUBMIT_BUTTON).click();
+        SUBMIT_BUTTON.click();
     }
-    
+
     public void cancel() {
-        guardXhr(CANCEL_BUTTON).click();
+        CANCEL_BUTTON.click();
     }
-    
+
     @Override
     public void waitUntilPageIsLoaded() {
         waitModel().until().element(SUBMIT_BUTTON).is().visible();
     }
-    
+
     protected abstract void updateVariant(String... input);
 }

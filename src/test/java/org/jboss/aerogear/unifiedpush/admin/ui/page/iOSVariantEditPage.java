@@ -34,6 +34,12 @@ public class iOSVariantEditPage extends VariantEditPage {
     @FindBy(jquery = "div.rcue-dialog-inner form section input[type=\"checkbox\"]")
     private WebElement IOS_PRODUCTION_FLAG_CHECKBOX;
 
+    @FindBy(jquery = "div.rcue-dialog-inner form input[type=\"submit\"]")
+    private WebElement SUBMIT_BUTTON;
+
+    @FindBy(jquery = "div.rcue-dialog-inner form input[type=\"reset\"]")
+    private WebElement CANCEL_BUTTON;
+
     public boolean isProd() {
         return IOS_PRODUCTION_FLAG_CHECKBOX.isSelected();
     }
@@ -49,7 +55,7 @@ public class iOSVariantEditPage extends VariantEditPage {
         if (input[3] != null) {
             clearNfill(APPLE_PASSPHRASE_INPUT_FIELD, input[3]);
         }
-        submitForm();
-    }
 
+        super.submitForm();
+    }
 }

@@ -16,8 +16,6 @@
  */
 package org.jboss.aerogear.unifiedpush.admin.ui.page.fragment;
 
-import static org.jboss.arquillian.graphene.Graphene.guardXhr;
-
 import org.jboss.arquillian.graphene.enricher.findby.FindBy;
 import org.openqa.selenium.WebElement;
 
@@ -27,6 +25,6 @@ public class Header {
     private WebElement LOGOUT_LINK;
 
     public void logout() {
-        guardXhr(LOGOUT_LINK).click();
+        LOGOUT_LINK.click();
     }
 }

@@ -16,12 +16,12 @@
  */
 package org.jboss.aerogear.unifiedpush.admin.ui.page;
 
-import static org.jboss.arquillian.graphene.Graphene.guardNoRequest;
-import static org.jboss.arquillian.graphene.Graphene.guardXhr;
 import static org.jboss.arquillian.graphene.Graphene.waitModel;
+import static org.jboss.arquillian.graphene.Graphene.element;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.jboss.aerogear.unifiedpush.admin.ui.model.AbstractVariant;
 import org.jboss.arquillian.graphene.enricher.findby.ByJQuery;
@@ -50,11 +50,11 @@ public class VariantsPage extends PushServerAdminUiPage {
     private WebElement BACK_TO_PUSH_APPS_LINK;
 
     public void navigateToPushAppsPage() {
-        guardXhr(BACK_TO_PUSH_APPS_LINK).click();
+        BACK_TO_PUSH_APPS_LINK.click();
     }
 
     public void addVariant() {
-        guardNoRequest(ADD_VARIANT_BUTTON).click();
+        ADD_VARIANT_BUTTON.click();
     }
 
     public String getHeaderTitle() {
@@ -81,13 +81,13 @@ public class VariantsPage extends PushServerAdminUiPage {
         final List<WebElement> anchors = VARIANTS_LIST.get(rowNum).findElements(By.tagName("a"));
         switch (link) {
             case DETAILS_PAGE:
-                guardXhr(anchors.get(0)).click();
+                anchors.get(0).click();
                 break;
             case EDIT:
-                guardNoRequest(anchors.get(1)).click();
+                anchors.get(1).click();
                 break;
             case REMOVE:
-                guardNoRequest(anchors.get(2)).click();
+                anchors.get(2).click();
                 break;
             default:
                 break;
@@ -134,6 +134,6 @@ public class VariantsPage extends PushServerAdminUiPage {
 
     @Override
     public void waitUntilPageIsLoaded() {
-        waitModel().until().element(ADD_VARIANT_BUTTON).is().visible();
+        waitModel().withTimeout(10, TimeUnit.SECONDS).until(element(ADD_VARIANT_BUTTON).isVisible());
     }
 }

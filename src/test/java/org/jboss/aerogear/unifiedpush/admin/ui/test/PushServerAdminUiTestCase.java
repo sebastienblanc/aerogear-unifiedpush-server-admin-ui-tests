@@ -31,14 +31,14 @@ import org.jboss.aerogear.unifiedpush.admin.ui.page.LoginPage;
 import org.jboss.aerogear.unifiedpush.admin.ui.page.PasswordChangePage;
 import org.jboss.aerogear.unifiedpush.admin.ui.page.PushAppEditPage;
 import org.jboss.aerogear.unifiedpush.admin.ui.page.PushAppsPage;
+import org.jboss.aerogear.unifiedpush.admin.ui.page.PushAppsPage.PUSH_APP_LINK;
 import org.jboss.aerogear.unifiedpush.admin.ui.page.ReLoginPage;
 import org.jboss.aerogear.unifiedpush.admin.ui.page.SimplePushVariantEditPage;
 import org.jboss.aerogear.unifiedpush.admin.ui.page.VariantDetailsPage;
 import org.jboss.aerogear.unifiedpush.admin.ui.page.VariantRegistrationPage;
 import org.jboss.aerogear.unifiedpush.admin.ui.page.VariantsPage;
-import org.jboss.aerogear.unifiedpush.admin.ui.page.iOSVariantEditPage;
-import org.jboss.aerogear.unifiedpush.admin.ui.page.PushAppsPage.PUSH_APP_LINK;
 import org.jboss.aerogear.unifiedpush.admin.ui.page.VariantsPage.VARIANT_LINK;
+import org.jboss.aerogear.unifiedpush.admin.ui.page.iOSVariantEditPage;
 import org.jboss.aerogear.unifiedpush.admin.ui.utils.InstallationUtils;
 import org.jboss.arquillian.graphene.spi.annotations.Page;
 import org.jboss.arquillian.junit.InSequence;
@@ -144,6 +144,7 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
     public void testPushAppCancellation() {
         // wait until push apps page is loaded
         pushAppsPage.waitUntilPageIsLoaded();
+        pushAppsPage.waitUntilTableContainsRows(1);
         // there should exist one push application
         assertTrue("There should exist 1 push app", pushAppsPage.countPushApps() == 1);
         pushAppsPage.pressCreateButton();
@@ -153,6 +154,7 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
         pushAppEditPage.cancel();
         // wait until page is loaded
         pushAppsPage.waitUntilPageIsLoaded();
+        pushAppsPage.waitUntilTableContainsRows(1);
         // there should exist one push application
         assertTrue("There should still exist 1 push app", pushAppsPage.countPushApps() == 1);
     }
@@ -162,6 +164,7 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
     public void testPushAppEdit() {
         // wait until page is loaded
         pushAppsPage.waitUntilPageIsLoaded();
+        pushAppsPage.waitUntilTableContainsRows(1);
         // there should exist one push application
         assertTrue("There should still exist 1 push app", pushAppsPage.countPushApps() == 1);
         // press the edit link
@@ -175,6 +178,7 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
         pushAppEditPage.updatePushApp(UPDATED_PUSH_APP_NAME, UPDATED_PUSH_APP_DESC);
         // wait until page is loaded
         pushAppsPage.waitUntilPageIsLoaded();
+        pushAppsPage.waitUntilTableContainsRows(1);
         final List<PushApplication> pushAppsList = pushAppsPage.getPushAppList();
         // The push app row should contain the updated info name, desc
         assertTrue(pushAppsList != null);
@@ -188,6 +192,7 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
     public void testAndroidVariantRegistration() {
         // wait until page is loaded
         pushAppsPage.waitUntilPageIsLoaded();
+        pushAppsPage.waitUntilTableContainsRows(1);
         // there should exist one push application
         assertTrue("There should still exist 1 push app", pushAppsPage.countPushApps() == 1);
         // press the variants link
@@ -220,6 +225,7 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
         variantsPage.navigateToPushAppsPage();
         // wait until page is loaded
         pushAppsPage.waitUntilPageIsLoaded();
+        pushAppsPage.waitUntilTableContainsRows(1);
         final List<PushApplication> pushAppsList = pushAppsPage.getPushAppList();
         // The variant counter should be updated to 1
         assertTrue(pushAppsList != null);
@@ -305,6 +311,7 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
         variantsPage.navigateToPushAppsPage();
         // wait until page is loaded
         pushAppsPage.waitUntilPageIsLoaded();
+        pushAppsPage.waitUntilTableContainsRows(1);
         // there should exist one push application
         assertTrue("There should still exist 1 push app", pushAppsPage.countPushApps() == 1);
         // press the variants link
@@ -422,8 +429,7 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
         // wait until page is loaded
         variantRegistrationPage.waitUntilPageIsLoaded();
         // register ios variant
-        variantRegistrationPage.registerSimplePushVariant(SIMPLE_PUSH_VARIANT_NAME, SIMPLE_PUSH_VARIANT_DESC,
-                SIMPLE_PUSH_VARIANT_NETWORK_URL);
+        variantRegistrationPage.registerSimplePushVariant(SIMPLE_PUSH_VARIANT_NAME, SIMPLE_PUSH_VARIANT_DESC);
         // wait until page is loaded
         variantsPage.waitUntilPageIsLoaded();
         assertTrue("There should exist three variants", variantsPage.countVariants() == 3);
@@ -459,8 +465,7 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
         // wait until page is loaded
         simplePushVariantEditPage.waitUntilPageIsLoaded();
         // edit variant
-        simplePushVariantEditPage.updateVariant(UPDATED_SIMPLE_PUSH_VARIANT_NAME, UPDATED_SIMPLE_PUSH_VARIANT_DESC,
-                UPDATED_SIMPLE_PUSH_VARIANT_NETWORK_URL);
+        simplePushVariantEditPage.updateVariant(UPDATED_SIMPLE_PUSH_VARIANT_NAME, UPDATED_SIMPLE_PUSH_VARIANT_DESC);
         // wait until next page is loaded
         variantsPage.waitUntilPageIsLoaded();
         variantPositionInList = variantsPage.findVariantRow(SIMPLE_PUSH_VARIANT_NAME);
@@ -513,6 +518,7 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
     @Test
     @InSequence(19)
     public void registerAndroidInstallations() {
+        pushAppsPage.waitUntilTableContainsRows(1);
         pushAppsPage.pressPushAppLink(0, PUSH_APP_LINK.VARIANTS_PAGE);
         // wait until page is loaded
         variantsPage.waitUntilPageIsLoaded();
@@ -536,14 +542,17 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
         assertTrue(!isEmpty(variantId) && !isEmpty(secret));
         // register installation
         Installation androidInstallation = new Installation(ANDROID_INSTALLATION_TOKEN_ID, ANDROID_INSTALLATION_DEVICE_TYPE,
-                ANDROID_INSTALLATION_OS, ANDROID_INSTALLATION_ALIAS, null, null);
+                ANDROID_INSTALLATION_OS, ANDROID_INSTALLATION_ALIAS, null, null, null);
         InstallationUtils.registerInstallation(contextRoot.toExternalForm(), variantId, secret, androidInstallation);
         // register second installation
         Installation secondAndroidInstallation = new Installation(ANDROID_INSTALLATION_TOKEN_ID_2,
-                ANDROID_INSTALLATION_DEVICE_TYPE, ANDROID_INSTALLATION_OS, ANDROID_INSTALLATION_ALIAS, null, null);
+                ANDROID_INSTALLATION_DEVICE_TYPE, ANDROID_INSTALLATION_OS, ANDROID_INSTALLATION_ALIAS, null, null, null);
         InstallationUtils.registerInstallation(contextRoot.toExternalForm(), variantId, secret, secondAndroidInstallation);
         // go back to push app page
         variantDetailsPage.navigateToPushAppsPage();
+        
+        pushAppsPage.waitUntilPageIsLoaded();
+        pushAppsPage.waitUntilTableContainsRows(1);
         // select the push app
         pushAppsPage.pressPushAppLink(0, PUSH_APP_LINK.VARIANTS_PAGE);
         // wait until page is loaded
@@ -598,11 +607,11 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
         assertTrue(!isEmpty(variantId) && !isEmpty(secret));
         // register installation
         Installation iosInstallation = new Installation(IOS_INSTALLATION_TOKEN_ID, IOS_INSTALLATION_DEVICE_TYPE,
-                IOS_INSTALLATION_OS, IOS_INSTALLATION_ALIAS, null, null);
+                IOS_INSTALLATION_OS, IOS_INSTALLATION_ALIAS, null, null, null);
         InstallationUtils.registerInstallation(contextRoot.toExternalForm(), variantId, secret, iosInstallation);
         // register second installation
         Installation secondiOSInstallation = new Installation(IOS_INSTALLATION_TOKEN_ID_2, IOS_INSTALLATION_DEVICE_TYPE,
-                IOS_INSTALLATION_OS, IOS_INSTALLATION_ALIAS, null, null);
+                IOS_INSTALLATION_OS, IOS_INSTALLATION_ALIAS, null, null, null);
         InstallationUtils.registerInstallation(contextRoot.toExternalForm(), variantId, secret, secondiOSInstallation);
         // go back to push app page
         variantDetailsPage.navigateToVariantsPage();
@@ -658,11 +667,12 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
         assertTrue(!isEmpty(variantId) && !isEmpty(secret));
         // register installation
         Installation spInstallation = new Installation(SIMPLE_PUSH_INSTALLATION_TOKEN_ID, SIMPLE_PUSH_INSTALLATION_DEVICE_TYPE,
-                SIMPLE_PUSH_INSTALLATION_OS, SIMPLE_PUSH_INSTALLATION_ALIAS, null, null);
+                SIMPLE_PUSH_INSTALLATION_OS, SIMPLE_PUSH_INSTALLATION_ALIAS, null, null, SIMPLE_PUSH_ENDPOINT_URL_1);
         InstallationUtils.registerInstallation(contextRoot.toExternalForm(), variantId, secret, spInstallation);
         // register second installation
         Installation secondSpInstallation = new Installation(SIMPLE_PUSH_INSTALLATION_TOKEN_ID_2,
-                SIMPLE_PUSH_INSTALLATION_DEVICE_TYPE, SIMPLE_PUSH_INSTALLATION_OS, SIMPLE_PUSH_INSTALLATION_ALIAS, null, null);
+                SIMPLE_PUSH_INSTALLATION_DEVICE_TYPE, SIMPLE_PUSH_INSTALLATION_OS, SIMPLE_PUSH_INSTALLATION_ALIAS, null, null,
+                SIMPLE_PUSH_ENDPOINT_URL_2);
         InstallationUtils.registerInstallation(contextRoot.toExternalForm(), variantId, secret, secondSpInstallation);
         // go back to variants page
         variantDetailsPage.navigateToVariantsPage();
@@ -697,6 +707,7 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
     public void testSecondPushAppRegistration() {
         // wait until push apps page is loaded
         pushAppsPage.waitUntilPageIsLoaded();
+        pushAppsPage.waitUntilTableContainsRows(1);
         // initially there shouldn't exist any push applications
         assertTrue("Initially there is 1 push app", pushAppsPage.countPushApps() == 1);
         // register a new push application
@@ -707,6 +718,7 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
         pushAppEditPage.registerNewPushApp(SECOND_PUSH_APP_NAME, PUSH_APP_DESC);
         // navigate to push apps page
         pushAppsPage.waitUntilPageIsLoaded();
+        pushAppsPage.waitUntilTableContainsRows(2);
         final List<PushApplication> pushAppsList = pushAppsPage.getPushAppList();
         // there should exist one push application
         assertTrue("There should exist 2 push apps", pushAppsList != null && pushAppsList.size() == 2);
@@ -719,6 +731,7 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
         pushAppsPage.logout();
         // wait until login page is loaded
         loginPage.waitUntilPageIsLoaded();
+        assertTrue(loginPage.getHeaderTitle() != null && loginPage.getHeaderTitle().contains(loginPage.getExpectedTitle()));
     }
 
     /* -- Testing data section -- */
@@ -771,13 +784,9 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
 
     private static final String SIMPLE_PUSH_VARIANT_DESC = "My awesome SimplePush variant!";
 
-    private static final String SIMPLE_PUSH_VARIANT_NETWORK_URL = "http://localhost:7777/";
-
     private static final String UPDATED_SIMPLE_PUSH_VARIANT_NAME = "MySimplePushVariant";
 
     private static final String UPDATED_SIMPLE_PUSH_VARIANT_DESC = "My awesome SimplePush variant!";
-
-    private static final String UPDATED_SIMPLE_PUSH_VARIANT_NETWORK_URL = "http://localhost:7777/endpoint/";
 
     private static final String ANDROID_INSTALLATION_TOKEN_ID = "QWERTY";
 
@@ -801,7 +810,11 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
 
     private static final String SIMPLE_PUSH_INSTALLATION_TOKEN_ID = "abcd123654";
 
+    private static final String SIMPLE_PUSH_ENDPOINT_URL_1 = "http://localhost:7777/" + SIMPLE_PUSH_INSTALLATION_TOKEN_ID;
+
     private static final String SIMPLE_PUSH_INSTALLATION_TOKEN_ID_2 = "abcd654321";
+
+    private static final String SIMPLE_PUSH_ENDPOINT_URL_2 = "http://localhost:7777/" + SIMPLE_PUSH_INSTALLATION_TOKEN_ID_2;
 
     private static final String SIMPLE_PUSH_INSTALLATION_DEVICE_TYPE = "WebPhone";
 
