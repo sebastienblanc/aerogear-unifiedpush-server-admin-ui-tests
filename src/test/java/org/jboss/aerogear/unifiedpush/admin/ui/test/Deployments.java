@@ -23,7 +23,7 @@ import org.jboss.shrinkwrap.resolver.api.maven.archive.importer.MavenImporter;
 
 public class Deployments {
 
-    private static final String AG_PUSH_POM_XML_LOCATION = "../aerogear-unified-push-server/pom.xml";
+    private static final String AG_PUSH_POM_XML_LOCATION = "../aerogear-unifiedpush-server/pom.xml";
 
     public static Archive<?> createDeployment() {
         WebArchive war = ShrinkWrap.create(MavenImporter.class).loadPomFromFile(AG_PUSH_POM_XML_LOCATION).importBuildOutput()
