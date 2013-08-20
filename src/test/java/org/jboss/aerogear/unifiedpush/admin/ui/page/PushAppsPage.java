@@ -75,6 +75,17 @@ public class PushAppsPage extends PushServerAdminUiPage {
         }
     }
 
+    public boolean pushApplicationExists(String name, String desc, List<PushApplication> list) {
+        if (list != null && !list.isEmpty()) {
+            for (PushApplication pushApp : list) {
+                if (pushApp.getName() != null && pushApp.getName().equals(name) && pushApp.getDescription() != null
+                        && pushApp.getDescription().equals(desc))
+                    return true;
+            }
+        }
+        return false;
+    }
+
     private List<WebElement> filterPushApplicationRows() {
         final List<WebElement> rowList = new ArrayList<WebElement>();
         for (WebElement row : PUSH_APPLICATION_LIST) {

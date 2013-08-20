@@ -720,6 +720,7 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
         pushAppsPage.waitUntilPageIsLoaded();
         pushAppsPage.waitUntilTableContainsRows(2);
         final List<PushApplication> pushAppsList = pushAppsPage.getPushAppList();
+        assertTrue(pushAppsPage.pushApplicationExists(SECOND_PUSH_APP_NAME, PUSH_APP_DESC, pushAppsList));
         // there should exist one push application
         assertTrue("There should exist 2 push apps", pushAppsList != null && pushAppsList.size() == 2);
     }
@@ -744,7 +745,7 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
 
     private static final String PUSH_APP_NAME = "MyApp";
 
-    private static final String SECOND_PUSH_APP_NAME = "MyNewApp";
+    private static final String SECOND_PUSH_APP_NAME = "AwesomeAppěščřžýáíéňľ";
 
     private static final String PUSH_APP_DESC = "Awesome app!";
 
