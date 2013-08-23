@@ -18,6 +18,7 @@ package org.jboss.aerogear.unifiedpush.admin.ui.test;
 
 import static org.jboss.aerogear.unifiedpush.admin.ui.utils.StringUtilities.isEmpty;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
@@ -27,6 +28,7 @@ import org.jboss.aerogear.unifiedpush.admin.ui.model.Installation;
 import org.jboss.aerogear.unifiedpush.admin.ui.model.PushApplication;
 import org.jboss.aerogear.unifiedpush.admin.ui.model.VariantType;
 import org.jboss.aerogear.unifiedpush.admin.ui.page.AndroidVariantEditPage;
+import org.jboss.aerogear.unifiedpush.admin.ui.page.ConfirmationBoxPage;
 import org.jboss.aerogear.unifiedpush.admin.ui.page.LoginPage;
 import org.jboss.aerogear.unifiedpush.admin.ui.page.PasswordChangePage;
 import org.jboss.aerogear.unifiedpush.admin.ui.page.PushAppEditPage;
@@ -83,6 +85,9 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
 
     @Page
     private SimplePushVariantEditPage simplePushVariantEditPage;
+
+    @Page
+    private ConfirmationBoxPage confirmationBoxPage;
 
     @Test
     @InSequence(1)
@@ -550,7 +555,7 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
         InstallationUtils.registerInstallation(contextRoot.toExternalForm(), variantId, secret, secondAndroidInstallation);
         // go back to push app page
         variantDetailsPage.navigateToPushAppsPage();
-        
+
         pushAppsPage.waitUntilPageIsLoaded();
         pushAppsPage.waitUntilTableContainsRows(1);
         // select the push app
@@ -721,12 +726,45 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
         pushAppsPage.waitUntilTableContainsRows(2);
         final List<PushApplication> pushAppsList = pushAppsPage.getPushAppList();
         assertTrue(pushAppsPage.pushApplicationExists(SECOND_PUSH_APP_NAME, PUSH_APP_DESC, pushAppsList));
-        // there should exist one push application
+        // there should exist two push applications
         assertTrue("There should exist 2 push apps", pushAppsList != null && pushAppsList.size() == 2);
     }
 
     @Test
     @InSequence(23)
+    public void testPushAppRemoval() {
+        pushAppsPage.waitUntilPageIsLoaded();
+        pushAppsPage.waitUntilTableContainsRows(2);
+        final int rowIndex = pushAppsPage.findPushAppRow(SECOND_PUSH_APP_NAME);
+        assertTrue(rowIndex != -1);
+        // force accept all the confirm boxes
+        confirmationBoxPage.acceptConfirmBoxes();
+        pushAppsPage.pressPushAppLink(rowIndex, PUSH_APP_LINK.REMOVE);
+        pushAppsPage.waitUntilPageIsLoaded();
+        pushAppsPage.waitUntilTableContainsRows(1);
+        // the deleted push app should not exist
+        final List<PushApplication> pushAppsList = pushAppsPage.getPushAppList();
+        assertFalse(pushAppsPage.pushApplicationExists(SECOND_PUSH_APP_NAME, PUSH_APP_DESC, pushAppsList));
+    }
+
+    @Test
+    @InSequence(24)
+    public void testVariantRemoval() {
+        pushAppsPage.waitUntilPageIsLoaded();
+        pushAppsPage.waitUntilTableContainsRows(1);
+        pushAppsPage.pressPushAppLink(0, PUSH_APP_LINK.VARIANTS_PAGE);
+        variantsPage.waitUntilPageIsLoaded();
+        int variantPositionInList = variantsPage.findVariantRow(UPDATED_ANDROID_VARIANT_NAME);
+        assertTrue(variantPositionInList != -1);
+        // click on a variant
+        variantsPage.pressVariantLink(variantPositionInList, VARIANT_LINK.REMOVE);
+        variantsPage.waitUntilPageIsLoaded();
+        variantPositionInList = variantsPage.findVariantRow(UPDATED_ANDROID_VARIANT_NAME);
+        assertTrue(variantPositionInList == -1);
+    }
+
+    @Test
+    @InSequence(25)
     public void testLogout() {
         // logout
         pushAppsPage.logout();
@@ -745,7 +783,8 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
 
     private static final String PUSH_APP_NAME = "MyApp";
 
-    private static final String SECOND_PUSH_APP_NAME = "AwesomeAppěščřžýáíéňľ";
+    // awesome application in Japanese
+    private static final String SECOND_PUSH_APP_NAME = "素晴らしいアプリケーション";
 
     private static final String PUSH_APP_DESC = "Awesome app!";
 
