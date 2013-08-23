@@ -96,15 +96,21 @@ public class VariantsPage extends PushServerAdminUiPage {
 
     public List<AbstractVariant> getVariantList() {
         final List<AbstractVariant> variantList = new ArrayList<AbstractVariant>();
-        for (WebElement row : VARIANTS_LIST) {
-            final List<WebElement> tableDataList = row.findElements(By.tagName("td"));
-            if (tableDataList.size() == 6) {
-                final String name = tableDataList.get(0).getText();
-                final String desc = tableDataList.get(1).getText();
-                final String type = tableDataList.get(2).getText();
-                final int installations = Integer.valueOf(tableDataList.get(3).getText());
-                // System.out.println("name: " + name + " desc: " + desc + " vars " + vars);
-                variantList.add(new AbstractVariant(name, desc, type, installations));
+        if (VARIANTS_LIST != null && VARIANTS_LIST.size() > 0) {
+            final List<WebElement> copy = new ArrayList<WebElement>();
+            copy.addAll(VARIANTS_LIST);
+            for (WebElement row : copy) {
+                if (row != null) {
+                    final List<WebElement> tableDataList = row.findElements(By.tagName("td"));
+                    if (tableDataList != null && tableDataList.size() == 6) {
+                        final String name = tableDataList.get(0).getText();
+                        final String desc = tableDataList.get(1).getText();
+                        final String type = tableDataList.get(2).getText();
+                        final int installations = Integer.valueOf(tableDataList.get(3).getText());
+                        // System.out.println("name: " + name + " desc: " + desc + " vars " + vars);
+                        variantList.add(new AbstractVariant(name, desc, type, installations));
+                    }
+                }
             }
         }
         return variantList;
@@ -124,9 +130,16 @@ public class VariantsPage extends PushServerAdminUiPage {
 
     private List<WebElement> filterVariantRows() {
         final List<WebElement> rowList = new ArrayList<WebElement>();
-        for (WebElement row : VARIANTS_LIST) {
-            if (row.findElements(ByJQuery.jquerySelector("td")).size() == 6) {
-                rowList.add(row);
+        if (VARIANTS_LIST != null && VARIANTS_LIST.size() > 0) {
+            final List<WebElement> copy = new ArrayList<WebElement>();
+            copy.addAll(VARIANTS_LIST);
+            for (WebElement row : copy) {
+                if (row != null) {
+                    final List<WebElement> tableDataList = row.findElements(By.tagName("td"));
+                    if (tableDataList != null && tableDataList.size() == 6) {
+                        rowList.add(row);
+                    }
+                }
             }
         }
         return rowList;

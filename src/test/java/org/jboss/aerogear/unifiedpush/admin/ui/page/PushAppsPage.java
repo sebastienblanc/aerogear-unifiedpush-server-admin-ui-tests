@@ -88,9 +88,16 @@ public class PushAppsPage extends PushServerAdminUiPage {
 
     private List<WebElement> filterPushApplicationRows() {
         final List<WebElement> rowList = new ArrayList<WebElement>();
-        for (WebElement row : PUSH_APPLICATION_LIST) {
-            if (row.findElements(By.tagName("td")).size() == 5) {
-                rowList.add(row);
+        if (PUSH_APPLICATION_LIST != null && PUSH_APPLICATION_LIST.size() > 0) {
+            final List<WebElement> copy = new ArrayList<WebElement>();
+            copy.addAll(PUSH_APPLICATION_LIST);
+            for (WebElement row : copy) {
+                if (row != null) {
+                    final List<WebElement> cols = row.findElements(By.tagName("td"));
+                    if (cols != null && cols.size() == 5) {
+                        rowList.add(row);
+                    }
+                }
             }
         }
         return rowList;
@@ -98,14 +105,20 @@ public class PushAppsPage extends PushServerAdminUiPage {
 
     public List<PushApplication> getPushAppList() {
         final List<PushApplication> pushAppList = new ArrayList<PushApplication>();
-        for (WebElement row : PUSH_APPLICATION_LIST) {
-            final List<WebElement> tableDataList = row.findElements(By.tagName("td"));
-            if (tableDataList.size() == 5) {
-                final String name = tableDataList.get(0).getText();
-                final String desc = tableDataList.get(1).getText();
-                final String vars = tableDataList.get(2).getText();
-                // System.out.println("name: " + name + " desc: " + desc + " vars " + vars);
-                pushAppList.add(new PushApplication(name, desc, Integer.valueOf(vars)));
+        if (PUSH_APPLICATION_LIST != null && PUSH_APPLICATION_LIST.size() > 0) {
+            final List<WebElement> copy = new ArrayList<WebElement>();
+            copy.addAll(PUSH_APPLICATION_LIST);
+            for (WebElement row : copy) {
+                if (row != null) {
+                    final List<WebElement> tableDataList = row.findElements(By.tagName("td"));
+                    if (tableDataList != null && tableDataList.size() == 5) {
+                        final String name = tableDataList.get(0).getText();
+                        final String desc = tableDataList.get(1).getText();
+                        final String vars = tableDataList.get(2).getText();
+                        // System.out.println("name: " + name + " desc: " + desc + " vars " + vars);
+                        pushAppList.add(new PushApplication(name, desc, Integer.valueOf(vars)));
+                    }
+                }
             }
         }
         return pushAppList;
