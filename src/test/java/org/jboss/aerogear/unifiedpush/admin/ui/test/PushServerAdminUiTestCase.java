@@ -749,6 +749,74 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
 
     @Test
     @InSequence(24)
+    public void testSecondAndroidVariantRegistration() {
+        pushAppsPage.waitUntilPageIsLoaded();
+        pushAppsPage.waitUntilTableContainsRows(1);
+        assertTrue("There should still exist 1 push app", pushAppsPage.countPushApps() == 1);
+        pushAppsPage.pressPushAppLink(0, PUSH_APP_LINK.VARIANTS_PAGE);
+        variantsPage.waitUntilPageIsLoaded();
+        assertTrue(variantsPage.getHeaderTitle().contains(UPDATED_PUSH_APP_NAME));
+        assertTrue(!isEmpty(variantsPage.getApplicationId()) && !isEmpty(variantsPage.getMasterSecret()));
+        assertTrue("there has to be already four variants registered", variantsPage.countVariants() == 4);
+        // add the second Android variant
+        variantsPage.addVariant();
+        // register new (second) Android variant
+        variantRegistrationPage.registerAndroidVariant(ANDROID_VARIANT_NAME_2, ANDROID_VARIANT_DESC_2, ANDROID_VARIANT_GOOGLE_KEY_2);
+        // wait until page is loaded
+        variantsPage.waitUntilPageIsLoaded();
+        // five variants should exist
+        final List<AbstractVariant> variantList = variantsPage.getVariantList();
+        assertTrue(variantList.size() == 5);
+        int variantPositionInList = variantsPage.findVariantRow(ANDROID_VARIANT_NAME_2);
+        assertTrue(variantPositionInList != -1);
+        assertEquals(ANDROID_VARIANT_NAME_2, variantList.get(variantPositionInList).getName());
+        assertEquals(ANDROID_VARIANT_DESC_2, variantList.get(variantPositionInList).getDescription());
+        assertEquals(VariantType.ANDROID, variantList.get(variantPositionInList).getVariantType());
+        assertEquals(0, variantList.get(variantPositionInList).getInstallations());
+        // go to push apps page
+        variantsPage.navigateToPushAppsPage();
+        pushAppsPage.waitUntilPageIsLoaded();
+        pushAppsPage.waitUntilTableContainsRows(1);
+        final List<PushApplication> pushAppsList = pushAppsPage.getPushAppList();
+        // The variant counter should be updated to 5
+        assertTrue(pushAppsList != null);
+        assertEquals(5, pushAppsList.get(0).getVariants());
+    }
+    
+    @Test
+    @InSequence(25)
+    public void testSecondSimplePushVariantRegistration() {
+        pushAppsPage.waitUntilPageIsLoaded();
+        pushAppsPage.waitUntilTableContainsRows(1);
+        assertTrue("There should still exist 1 push app", pushAppsPage.countPushApps() == 1);
+        pushAppsPage.pressPushAppLink(0, PUSH_APP_LINK.VARIANTS_PAGE);
+        variantsPage.waitUntilPageIsLoaded();
+        assertTrue(variantsPage.getHeaderTitle().contains(UPDATED_PUSH_APP_NAME));
+        assertTrue(!isEmpty(variantsPage.getApplicationId()) && !isEmpty(variantsPage.getMasterSecret()));
+        assertTrue("there has to be already five variants registered", variantsPage.countVariants() == 5);
+        // add the second SimplePush variant
+        variantsPage.addVariant();
+        // register it
+        variantRegistrationPage.registerSimplePushVariant(SIMPLE_PUSH_VARIANT_NAME_2, SIMPLE_PUSH_VARIANT_DESC_2);
+        variantsPage.waitUntilPageIsLoaded();
+        // six variants should exist
+        final List<AbstractVariant> variantList = variantsPage.getVariantList();
+        assertTrue(variantList.size() == 6);
+        int variantPositionList = variantsPage.findVariantRow(SIMPLE_PUSH_VARIANT_NAME_2);
+        assertTrue(variantPositionList != -1);
+        assertEquals(SIMPLE_PUSH_VARIANT_NAME_2, variantList.get(variantPositionList).getName());
+        assertEquals(SIMPLE_PUSH_VARIANT_DESC_2, variantList.get(variantPositionList).getDescription());
+        variantsPage.navigateToPushAppsPage();
+        pushAppsPage.waitUntilPageIsLoaded();
+        pushAppsPage.waitUntilTableContainsRows(1);
+        final List<PushApplication> pushAppsList = pushAppsPage.getPushAppList();
+        // The variant counter should be updated to 6
+        assertTrue(pushAppsList != null);
+        assertEquals(6, pushAppsList.get(0).getVariants());
+    }
+    
+    @Test
+    @InSequence(26)
     public void testVariantRemoval() {
         pushAppsPage.waitUntilPageIsLoaded();
         pushAppsPage.waitUntilTableContainsRows(1);
@@ -764,7 +832,7 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
     }
 
     @Test
-    @InSequence(25)
+    @InSequence(27)
     public void testLogout() {
         // logout
         pushAppsPage.logout();
@@ -797,6 +865,12 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
     private static final String ANDROID_VARIANT_DESC = "My awesome variant!";
 
     private static final String ANDROID_VARIANT_GOOGLE_KEY = "IDDASDASDSAQ";
+    
+    private static final String ANDROID_VARIANT_NAME_2 = "MyAndroidVariant2";
+
+    private static final String ANDROID_VARIANT_DESC_2 = "My awesome second variant!";
+
+    private static final String ANDROID_VARIANT_GOOGLE_KEY_2 = "IDDASDASDSAQ2";    
 
     private static final String UPDATED_ANDROID_VARIANT_NAME = "MyNewAndroidVariant";
 
@@ -823,6 +897,10 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
     private static final String SIMPLE_PUSH_VARIANT_NAME = "MySimplePushVariant";
 
     private static final String SIMPLE_PUSH_VARIANT_DESC = "My awesome SimplePush variant!";
+    
+    private static final String SIMPLE_PUSH_VARIANT_NAME_2 = "MySimplePushVariant2";
+
+    private static final String SIMPLE_PUSH_VARIANT_DESC_2 = "My awesome second SimplePush variant!";    
 
     private static final String UPDATED_SIMPLE_PUSH_VARIANT_NAME = "MySimplePushVariant";
 
