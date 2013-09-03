@@ -16,15 +16,14 @@
  */
 package org.jboss.aerogear.unifiedpush.admin.ui.page;
 
-import static org.jboss.arquillian.graphene.Graphene.waitModel;
 import static org.jboss.arquillian.graphene.Graphene.element;
+import static org.jboss.arquillian.graphene.Graphene.waitModel;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.jboss.aerogear.unifiedpush.admin.ui.model.AbstractVariant;
-import org.jboss.arquillian.graphene.enricher.findby.ByJQuery;
 import org.jboss.arquillian.graphene.enricher.findby.FindBy;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -97,9 +96,7 @@ public class VariantsPage extends PushServerAdminUiPage {
     public List<AbstractVariant> getVariantList() {
         final List<AbstractVariant> variantList = new ArrayList<AbstractVariant>();
         if (VARIANTS_LIST != null && VARIANTS_LIST.size() > 0) {
-            final List<WebElement> copy = new ArrayList<WebElement>();
-            copy.addAll(VARIANTS_LIST);
-            for (WebElement row : copy) {
+            for (WebElement row : VARIANTS_LIST) {
                 if (row != null) {
                     final List<WebElement> tableDataList = row.findElements(By.tagName("td"));
                     if (tableDataList != null && tableDataList.size() == 6) {
@@ -129,11 +126,15 @@ public class VariantsPage extends PushServerAdminUiPage {
     }
 
     private List<WebElement> filterVariantRows() {
+        try {
+            // workaround for travis headless browser testing
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            //e.printStackTrace();
+        }
         final List<WebElement> rowList = new ArrayList<WebElement>();
         if (VARIANTS_LIST != null && VARIANTS_LIST.size() > 0) {
-            final List<WebElement> copy = new ArrayList<WebElement>();
-            copy.addAll(VARIANTS_LIST);
-            for (WebElement row : copy) {
+            for (WebElement row : VARIANTS_LIST) {
                 if (row != null) {
                     final List<WebElement> tableDataList = row.findElements(By.tagName("td"));
                     if (tableDataList != null && tableDataList.size() == 6) {
