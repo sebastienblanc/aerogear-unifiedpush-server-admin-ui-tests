@@ -20,24 +20,24 @@ import static org.jboss.aerogear.unifiedpush.admin.ui.utils.WebElementUtils.clea
 
 import java.io.File;
 
-import org.jboss.arquillian.graphene.enricher.findby.FindBy;
+import org.jboss.arquillian.graphene.findby.FindByJQuery;
 import org.openqa.selenium.WebElement;
 
 public class iOSVariantEditPage extends VariantEditPage {
 
-    @FindBy(jquery = "div.rcue-dialog-inner form section input[type=\"file\"]")
+    @FindByJQuery("div.rcue-dialog-inner form section input[type=\"file\"]")
     private WebElement APPLE_CERTIFICATE_INPUT_FILE;
 
-    @FindBy(jquery = "div.rcue-dialog-inner form section input[type=\"password\"]")
+    @FindByJQuery("div.rcue-dialog-inner form section input[type=\"password\"]")
     private WebElement APPLE_PASSPHRASE_INPUT_FIELD;
 
-    @FindBy(jquery = "div.rcue-dialog-inner form section input[type=\"checkbox\"]")
+    @FindByJQuery("div.rcue-dialog-inner form section input[type=\"checkbox\"]")
     private WebElement IOS_PRODUCTION_FLAG_CHECKBOX;
 
-    @FindBy(jquery = "div.rcue-dialog-inner form input[type=\"submit\"]")
+    @FindByJQuery("div.rcue-dialog-inner form input[type=\"submit\"]")
     private WebElement SUBMIT_BUTTON;
 
-    @FindBy(jquery = "div.rcue-dialog-inner form input[type=\"reset\"]")
+    @FindByJQuery("div.rcue-dialog-inner form input[type=\"reset\"]")
     private WebElement CANCEL_BUTTON;
 
     public boolean isProd() {

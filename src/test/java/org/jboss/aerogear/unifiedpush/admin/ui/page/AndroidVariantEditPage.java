@@ -18,12 +18,12 @@ package org.jboss.aerogear.unifiedpush.admin.ui.page;
 
 import static org.jboss.aerogear.unifiedpush.admin.ui.utils.WebElementUtils.clearNfill;
 
-import org.jboss.arquillian.graphene.enricher.findby.FindBy;
+import org.jboss.arquillian.graphene.findby.FindByJQuery;
 import org.openqa.selenium.WebElement;
 
 public class AndroidVariantEditPage extends VariantEditPage {
 
-    @FindBy(jquery = "div.rcue-dialog-inner form section:eq(0) input[type=\"text\"]")
+    @FindByJQuery("div.rcue-dialog-inner form section:eq(0) input[type=\"text\"]")
     private WebElement GOOGLE_API_KEY_INPUT_FIELD;
 
     public String getGoogleApiKey() {

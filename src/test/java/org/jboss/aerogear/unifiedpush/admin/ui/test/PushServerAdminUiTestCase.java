@@ -42,7 +42,7 @@ import org.jboss.aerogear.unifiedpush.admin.ui.page.VariantsPage;
 import org.jboss.aerogear.unifiedpush.admin.ui.page.VariantsPage.VARIANT_LINK;
 import org.jboss.aerogear.unifiedpush.admin.ui.page.iOSVariantEditPage;
 import org.jboss.aerogear.unifiedpush.admin.ui.utils.InstallationUtils;
-import org.jboss.arquillian.graphene.spi.annotations.Page;
+import org.jboss.arquillian.graphene.page.Page;
 import org.jboss.arquillian.junit.InSequence;
 import org.junit.Test;
 

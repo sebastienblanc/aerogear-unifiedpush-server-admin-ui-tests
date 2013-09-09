@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.jboss.aerogear.unifiedpush.admin.ui.model.PushApplication;
-import org.jboss.arquillian.graphene.enricher.findby.FindBy;
+import org.jboss.arquillian.graphene.findby.FindByJQuery;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -31,13 +31,13 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 
 public class PushAppsPage extends PushServerAdminUiPage {
 
-    @FindBy(jquery = "table.rcue-table")
+    @FindByJQuery("table.rcue-table")
     private WebElement PUSH_APPLICATION_TABLE;
 
-    @FindBy(jquery = "table.rcue-table thead tr:eq(0) a")
+    @FindByJQuery("table.rcue-table thead tr:eq(0) a")
     private WebElement CREATE_BUTTON;
 
-    @FindBy(jquery = "table.rcue-table tbody tr")
+    @FindByJQuery("table.rcue-table tbody tr")
     private List<WebElement> PUSH_APPLICATION_LIST;
 
     private final static String PAGE_URL = "#/mobileApps";

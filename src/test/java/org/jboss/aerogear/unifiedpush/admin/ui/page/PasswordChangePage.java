@@ -19,18 +19,18 @@ package org.jboss.aerogear.unifiedpush.admin.ui.page;
 import static org.jboss.aerogear.unifiedpush.admin.ui.utils.WebElementUtils.clearNfill;
 import static org.jboss.arquillian.graphene.Graphene.waitModel;
 
-import org.jboss.arquillian.graphene.enricher.findby.FindBy;
+import org.jboss.arquillian.graphene.findby.FindByJQuery;
 import org.openqa.selenium.WebElement;
 
 public class PasswordChangePage extends PushServerAdminUiPage {
 
-    @FindBy(jquery = "#other p:eq(0) input[type=\"password\"]")
+    @FindByJQuery("#other p:eq(0) input[type=\"password\"]")
     private WebElement PASSWORD_FIELD;
 
-    @FindBy(jquery = "#other p:eq(1) input[type=\"password\"]")
+    @FindByJQuery("#other p:eq(1) input[type=\"password\"]")
     private WebElement CONFIRM_PASSWORD_FIELD;
 
-    @FindBy(jquery = "#other button")
+    @FindByJQuery("#other button")
     private WebElement SUBMIT_BUTTON;
 
     public void changePassword(String password) {

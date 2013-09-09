@@ -16,7 +16,6 @@
  */
 package org.jboss.aerogear.unifiedpush.admin.ui.page;
 
-import static org.jboss.arquillian.graphene.Graphene.element;
 import static org.jboss.arquillian.graphene.Graphene.waitModel;
 
 import java.util.ArrayList;
@@ -24,28 +23,28 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.jboss.aerogear.unifiedpush.admin.ui.model.AbstractVariant;
-import org.jboss.arquillian.graphene.enricher.findby.FindBy;
+import org.jboss.arquillian.graphene.findby.FindByJQuery;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 public class VariantsPage extends PushServerAdminUiPage {
 
-    @FindBy(jquery = "table.rcue-table thead div.topcoat-button a")
+    @FindByJQuery("table.rcue-table thead div.topcoat-button a")
     private WebElement ADD_VARIANT_BUTTON;
 
-    @FindBy(jquery = "div.content section h2")
+    @FindByJQuery("div.content section h2")
     private WebElement HEADER_TITLE;
 
-    @FindBy(jquery = "div.content section span.rcue-code:eq(0)")
+    @FindByJQuery("div.content section span.rcue-code:eq(0)")
     private WebElement APPLICATION_ID;
 
-    @FindBy(jquery = "div.content section span.rcue-code:eq(1)")
+    @FindByJQuery("div.content section span.rcue-code:eq(1)")
     private WebElement MASTER_SECRET;
 
-    @FindBy(jquery = "table.rcue-table tbody tr")
+    @FindByJQuery("table.rcue-table tbody tr")
     private List<WebElement> VARIANTS_LIST;
 
-    @FindBy(jquery = "div.content a[href=\"#/mobileApps\"]")
+    @FindByJQuery("div.content a[href=\"#/mobileApps\"]")
     private WebElement BACK_TO_PUSH_APPS_LINK;
 
     public void navigateToPushAppsPage() {
@@ -130,7 +129,7 @@ public class VariantsPage extends PushServerAdminUiPage {
             // workaround for travis headless browser testing
             Thread.sleep(1000);
         } catch (InterruptedException e) {
-            //e.printStackTrace();
+            // e.printStackTrace();
         }
         final List<WebElement> rowList = new ArrayList<WebElement>();
         if (VARIANTS_LIST != null && VARIANTS_LIST.size() > 0) {
@@ -148,6 +147,6 @@ public class VariantsPage extends PushServerAdminUiPage {
 
     @Override
     public void waitUntilPageIsLoaded() {
-        waitModel().withTimeout(10, TimeUnit.SECONDS).until(element(ADD_VARIANT_BUTTON).isVisible());
+        waitModel().withTimeout(10, TimeUnit.SECONDS).until().element(ADD_VARIANT_BUTTON).is().visible();
     }
 }

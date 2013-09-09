@@ -19,12 +19,13 @@ package org.jboss.aerogear.unifiedpush.admin.ui.page;
 import static org.jboss.arquillian.graphene.Graphene.waitModel;
 
 import org.jboss.aerogear.unifiedpush.admin.ui.page.fragment.Header;
-import org.jboss.arquillian.graphene.enricher.findby.FindBy;
+import org.jboss.arquillian.graphene.findby.FindByJQuery;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 
 public class PushServerAdminUiPage {
 
-    @FindBy(jquery = "div.right")
+    @FindByJQuery("div.right")
     private Header HEADER;
 
     @FindBy(className = "content")

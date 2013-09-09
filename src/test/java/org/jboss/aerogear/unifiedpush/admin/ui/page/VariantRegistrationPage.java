@@ -21,39 +21,39 @@ import static org.jboss.arquillian.graphene.Graphene.waitModel;
 
 import java.io.File;
 
-import org.jboss.arquillian.graphene.enricher.findby.FindBy;
+import org.jboss.arquillian.graphene.findby.FindByJQuery;
 import org.openqa.selenium.WebElement;
 
 public class VariantRegistrationPage extends PushServerAdminUiPage {
 
-    @FindBy(jquery = "div.rcue-dialog-inner form p:eq(0) input[name=\"name\"]")
+    @FindByJQuery("div.rcue-dialog-inner form p:eq(0) input[name=\"name\"]")
     private WebElement VARIANT_NAME;
 
-    @FindBy(jquery = "div.rcue-dialog-inner form p:eq(1) textarea[name=\"description\"]")
+    @FindByJQuery("div.rcue-dialog-inner form p:eq(1) textarea[name=\"description\"]")
     private WebElement VARIANT_DESC;
 
-    @FindBy(jquery = "div.rcue-dialog-inner form section:eq(0) input[type=\"radio\"][name=\"platform\"][value=\"android\"]]")
+    @FindByJQuery("div.rcue-dialog-inner form section:eq(0) input[type=\"radio\"][name=\"platform\"][value=\"android\"]]")
     private WebElement RADIO_BUTTON_ANDROID;
 
-    @FindBy(jquery = "div.rcue-dialog-inner form section:eq(0) input[type=\"text\"]")
+    @FindByJQuery("div.rcue-dialog-inner form section:eq(0) input[type=\"text\"]")
     private WebElement GOOGLE_API_KEY_INPUT_FIELD;
 
-    @FindBy(jquery = "div.rcue-dialog-inner form section:eq(1) input[type=\"radio\"][name=\"platform\"][value=\"iOS\"]]")
+    @FindByJQuery("div.rcue-dialog-inner form section:eq(1) input[type=\"radio\"][name=\"platform\"][value=\"iOS\"]]")
     private WebElement RADIO_BUTTON_APPLE;
 
-    @FindBy(jquery = "div.rcue-dialog-inner form section:eq(2) input[type=\"radio\"][name=\"platform\"][value=\"simplePush\"]]")
+    @FindByJQuery("div.rcue-dialog-inner form section:eq(2) input[type=\"radio\"][name=\"platform\"][value=\"simplePush\"]]")
     private WebElement RADIO_BUTTON_SIMPLE_PUSH;
 
-    @FindBy(jquery = "div.rcue-dialog-inner form input[type=\"submit\"]")
+    @FindByJQuery("div.rcue-dialog-inner form input[type=\"submit\"]")
     private WebElement SUBMIT_BUTTON;
 
-    @FindBy(jquery = "div.rcue-dialog-inner form section:eq(1) input[type=\"file\"]")
+    @FindByJQuery("div.rcue-dialog-inner form section:eq(1) input[type=\"file\"]")
     private WebElement APPLE_CERTIFICATE_INPUT_FILE;
 
-    @FindBy(jquery = "div.rcue-dialog-inner form section:eq(1) input[type=\"password\"]")
+    @FindByJQuery("div.rcue-dialog-inner form section:eq(1) input[type=\"password\"]")
     private WebElement APPLE_PASSPHRASE_INPUT_FIELD;
 
-    @FindBy(jquery = "div.rcue-dialog-inner form section:eq(1) input[type=\"checkbox\"]")
+    @FindByJQuery("div.rcue-dialog-inner form section:eq(1) input[type=\"checkbox\"]")
     private WebElement IOS_PRODUCTION_FLAG_CHECKBOX;
 
     public void registerAndroidVariant(String name, String desc, String googleApiKey) {

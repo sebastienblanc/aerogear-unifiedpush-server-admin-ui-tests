@@ -18,27 +18,27 @@ package org.jboss.aerogear.unifiedpush.admin.ui.page;
 
 import static org.jboss.aerogear.unifiedpush.admin.ui.utils.StringUtilities.isEmpty;
 import static org.jboss.aerogear.unifiedpush.admin.ui.utils.WebElementUtils.clearNfill;
-import static org.jboss.arquillian.graphene.Graphene.element;
 import static org.jboss.arquillian.graphene.Graphene.waitModel;
 
-import org.jboss.arquillian.graphene.enricher.findby.FindBy;
+import org.jboss.arquillian.graphene.findby.FindByJQuery;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 
 public class PushAppEditPage extends PushServerAdminUiPage {
 
     @FindBy(tagName = "form")
     private WebElement FORM;
 
-    @FindBy(jquery = "form input[type=\"submit\"]")
+    @FindByJQuery("form input[type=\"submit\"]")
     private WebElement SUBMIT_BUTTON;
 
-    @FindBy(jquery = "form input[type=\"reset\"]")
+    @FindByJQuery("form input[type=\"reset\"]")
     private WebElement CANCEL_BUTTON;
 
-    @FindBy(jquery = "form p:eq(0) input[type=\"text\"]")
+    @FindByJQuery("form p:eq(0) input[type=\"text\"]")
     private WebElement NAME_FIELD;
 
-    @FindBy(jquery = "form p:eq(1) textarea")
+    @FindByJQuery("form p:eq(1) textarea")
     private WebElement DESCRIPTION_FIELD;
 
     private static final String PAGE_URL = "#/mobileApps/edit/undefined";
@@ -81,7 +81,7 @@ public class PushAppEditPage extends PushServerAdminUiPage {
 
     @Override
     public void waitUntilPageIsLoaded() {
-        waitModel().until(element(CANCEL_BUTTON).isVisible());
-        waitModel().until(element(SUBMIT_BUTTON).isVisible());
+        waitModel().until().element(CANCEL_BUTTON).is().visible();
+        waitModel().until().element(SUBMIT_BUTTON).is().visible();
     }
 }

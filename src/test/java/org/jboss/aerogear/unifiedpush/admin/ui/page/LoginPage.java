@@ -19,21 +19,21 @@ package org.jboss.aerogear.unifiedpush.admin.ui.page;
 import static org.jboss.aerogear.unifiedpush.admin.ui.utils.WebElementUtils.clearNfill;
 import static org.jboss.arquillian.graphene.Graphene.waitModel;
 
-import org.jboss.arquillian.graphene.enricher.findby.FindBy;
+import org.jboss.arquillian.graphene.findby.FindByJQuery;
 import org.openqa.selenium.WebElement;
 
 public class LoginPage extends PushServerAdminUiPage {
 
-    @FindBy(jquery = "#login p:eq(0) input[type=\"text\"]")
+    @FindByJQuery("#login p:eq(0) input[type=\"text\"]")
     private WebElement USERNAME_FIELD;
 
-    @FindBy(jquery = "#login p:eq(1) input[type=\"password\"]")
+    @FindByJQuery("#login p:eq(1) input[type=\"password\"]")
     private WebElement PASSWORD_FIELD;
 
-    @FindBy(jquery = "#login button")
+    @FindByJQuery("#login button")
     private WebElement SUBMIT_BUTTON;
 
-    @FindBy(jquery = "div.content header h1")
+    @FindByJQuery("div.content header h1")
     private WebElement HEADER_TITLE;
 
     private final static String TITLE = "Login";

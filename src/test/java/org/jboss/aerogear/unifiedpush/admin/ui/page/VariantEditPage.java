@@ -19,21 +19,21 @@ package org.jboss.aerogear.unifiedpush.admin.ui.page;
 import static org.jboss.aerogear.unifiedpush.admin.ui.utils.WebElementUtils.clearNfill;
 import static org.jboss.arquillian.graphene.Graphene.waitModel;
 
-import org.jboss.arquillian.graphene.enricher.findby.FindBy;
+import org.jboss.arquillian.graphene.findby.FindByJQuery;
 import org.openqa.selenium.WebElement;
 
 public abstract class VariantEditPage extends PushServerAdminUiPage {
 
-    @FindBy(jquery = "div.rcue-dialog-inner form p:eq(0) input[name=\"name\"]")
+    @FindByJQuery("div.rcue-dialog-inner form p:eq(0) input[name=\"name\"]")
     private WebElement VARIANT_NAME;
 
-    @FindBy(jquery = "div.rcue-dialog-inner form p:eq(1) textarea[name=\"description\"]")
+    @FindByJQuery("div.rcue-dialog-inner form p:eq(1) textarea[name=\"description\"]")
     private WebElement VARIANT_DESC;
 
-    @FindBy(jquery = "div.rcue-dialog-inner form input[type=\"reset\"]")
+    @FindByJQuery("div.rcue-dialog-inner form input[type=\"reset\"]")
     private WebElement CANCEL_BUTTON;
 
-    @FindBy(jquery = "div.rcue-dialog-inner form input[type=\"submit\"]")
+    @FindByJQuery("div.rcue-dialog-inner form input[type=\"submit\"]")
     private WebElement SUBMIT_BUTTON;
 
     public void fillVariantDetails(String name, String desc) {

@@ -35,9 +35,9 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <version.org.jboss.arquillian.graphene>2.0.0.Alpha3</version.org.jboss.arquillian.graphene>
+        <version.org.jboss.arquillian.graphene>2.0.0.Alpha5</version.org.jboss.arquillian.graphene>
         <version.org.jboss.arquillian>1.1.0.Final</version.org.jboss.arquillian>
-        <version.selenium>2.33.0</version.selenium>
+        <version.selenium>2.35.0</version.selenium>
         <version.org.jboss.as>7.1.1.Final</version.org.jboss.as>
         <version.org.jboss.spec>3.0.2.Final</version.org.jboss.spec>
         <version.com.jayway.restassured>1.8.1</version.com.jayway.restassured>
@@ -200,15 +200,6 @@
     <dependencyManagement>
         <dependencies>
 
-            <!-- This POM serves as BOM (Bill of Materials) for managing core Selenium dependency versions. -->
-            <dependency>
-                <groupId>org.jboss.arquillian.selenium</groupId>
-                <artifactId>selenium-bom</artifactId>
-                <version>${version.selenium}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-
             <!-- Starting point for integration Graphene test suites. -->
             <dependency>
                 <groupId>org.jboss.arquillian.graphene</groupId>
@@ -244,19 +235,12 @@
             <artifactId>graphene-webdriver</artifactId>
             <type>pom</type>
         </dependency>
-
-        <!-- Arquillian BOM (Bill Of Materials). -->
-        <dependency>
-            <groupId>org.jboss.arquillian</groupId>
-            <artifactId>arquillian-bom</artifactId>
-            <version>${version.org.jboss.arquillian}</version>
-            <type>pom</type>
-        </dependency>
-
+        
         <!-- JUnit regression testing framework. -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
+            <scope>test</scope>
         </dependency>
         
         <!-- JUnit Container Implementation for the Arquillian Project -->

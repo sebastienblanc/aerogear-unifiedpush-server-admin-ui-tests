@@ -22,31 +22,32 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jboss.aerogear.unifiedpush.admin.ui.model.Installation;
-import org.jboss.arquillian.graphene.enricher.findby.FindBy;
+import org.jboss.arquillian.graphene.findby.FindByJQuery;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 
 public class VariantDetailsPage extends PushServerAdminUiPage {
 
-    @FindBy(jquery = "div.content section h2")
+    @FindByJQuery("div.content section h2")
     private WebElement HEADER_TITLE;
 
-    @FindBy(jquery = "div.content section span.rcue-code:eq(0)")
+    @FindByJQuery("div.content section span.rcue-code:eq(0)")
     private WebElement VARIANT_ID;
 
-    @FindBy(jquery = "div.content section span.rcue-code:eq(1)")
+    @FindByJQuery("div.content section span.rcue-code:eq(1)")
     private WebElement SECRET;
 
     @FindBy(id = "mobile-application-variant-table")
     private WebElement MOBILE_INSTALLATIONS_TABLE_CONTAINER;
 
-    @FindBy(jquery = "#mobile-application-variant-table table tr")
+    @FindByJQuery("#mobile-application-variant-table table tr")
     private List<WebElement> MOBILE_INSTALLATION_ROWS;
 
-    @FindBy(jquery = "div.content div:eq(1) a:eq(0)")
+    @FindByJQuery("div.content div:eq(1) a:eq(0)")
     private WebElement BREADCRUMB_PUSH_APPS_LINK;
 
-    @FindBy(jquery = "div.content div:eq(1) a:eq(1)")
+    @FindByJQuery("div.content div:eq(1) a:eq(1)")
     private WebElement BREADCRUMB_VARIANTS_LINK;
 
     public void navigateToPushAppsPage() {
