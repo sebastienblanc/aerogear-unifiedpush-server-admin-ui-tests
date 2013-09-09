@@ -17,9 +17,11 @@
 package org.jboss.aerogear.unifiedpush.admin.ui.test;
 
 import static org.jboss.aerogear.unifiedpush.admin.ui.utils.StringUtilities.isEmpty;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNotNull;
 
 import java.util.List;
 
@@ -29,6 +31,7 @@ import org.jboss.aerogear.unifiedpush.admin.ui.model.PushApplication;
 import org.jboss.aerogear.unifiedpush.admin.ui.model.VariantType;
 import org.jboss.aerogear.unifiedpush.admin.ui.page.AndroidVariantEditPage;
 import org.jboss.aerogear.unifiedpush.admin.ui.page.ConfirmationBoxPage;
+import org.jboss.aerogear.unifiedpush.admin.ui.page.InstallationDetailsPage;
 import org.jboss.aerogear.unifiedpush.admin.ui.page.LoginPage;
 import org.jboss.aerogear.unifiedpush.admin.ui.page.PasswordChangePage;
 import org.jboss.aerogear.unifiedpush.admin.ui.page.PushAppEditPage;
@@ -86,6 +89,9 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
     @Page
     private SimplePushVariantEditPage simplePushVariantEditPage;
 
+    @Page
+    private InstallationDetailsPage installationDetailsPage;
+    
     @Page
     private ConfirmationBoxPage confirmationBoxPage;
 
@@ -547,11 +553,11 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
         assertTrue(!isEmpty(variantId) && !isEmpty(secret));
         // register installation
         Installation androidInstallation = new Installation(ANDROID_INSTALLATION_TOKEN_ID, ANDROID_INSTALLATION_DEVICE_TYPE,
-                ANDROID_INSTALLATION_OS, ANDROID_INSTALLATION_ALIAS, null, null, null);
+                ANDROID_INSTALLATION_OS, ANDROID_INSTALLATION_ALIAS, null, null, null, null);
         InstallationUtils.registerInstallation(contextRoot.toExternalForm(), variantId, secret, androidInstallation);
         // register second installation
         Installation secondAndroidInstallation = new Installation(ANDROID_INSTALLATION_TOKEN_ID_2,
-                ANDROID_INSTALLATION_DEVICE_TYPE, ANDROID_INSTALLATION_OS, ANDROID_INSTALLATION_ALIAS, null, null, null);
+                ANDROID_INSTALLATION_DEVICE_TYPE, ANDROID_INSTALLATION_OS, ANDROID_INSTALLATION_ALIAS, null, null, null, null);
         InstallationUtils.registerInstallation(contextRoot.toExternalForm(), variantId, secret, secondAndroidInstallation);
         // go back to push app page
         variantDetailsPage.navigateToPushAppsPage();
@@ -572,7 +578,7 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
         // wait until page is loaded
         variantDetailsPage.waitUntilPageIsLoaded();
         // two installations should exist
-        final List<Installation> installationList = variantDetailsPage.getInstallationList();
+        List<Installation> installationList = variantDetailsPage.getInstallationList();
         assertTrue(installationList != null && installationList.size() == 2);
         // the installations should have the right token ids
         assertTrue(variantDetailsPage.tokenIdExistsInList(ANDROID_INSTALLATION_TOKEN_ID, installationList)
@@ -583,6 +589,26 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
         // status should be enabled
         assertEquals(INSTALLATION_STATUS_ENABLED, installationList.get(0).getStatus());
         assertEquals(INSTALLATION_STATUS_ENABLED, installationList.get(1).getStatus());
+        int rowNum = variantDetailsPage.findInstallationRow(ANDROID_INSTALLATION_TOKEN_ID);
+        assertNotEquals(rowNum, -1);
+        // check installation details
+        variantDetailsPage.pressInstallationLink(rowNum);
+        // wait until installation details page is loaded
+        installationDetailsPage.waitUntilPageIsLoaded();
+        Installation installationDetails = installationDetailsPage.getInstallationDetails();
+        assertNotNull(installationDetails);
+        assertEquals(installationDetails.getDeviceToken(), ANDROID_INSTALLATION_TOKEN_ID);
+        assertEquals(installationDetails.getDeviceType(), ANDROID_INSTALLATION_DEVICE_TYPE);
+        assertEquals(installationDetails.getPlatform(), ANDROID_INSTALLATION_OS);
+        assertEquals(installationDetails.getAlias(), ANDROID_INSTALLATION_ALIAS);
+        installationDetailsPage.pressToggleLink();
+        installationDetailsPage.navigateToVariantPage();
+        variantDetailsPage.waitUntilPageIsLoaded();
+        // status should have been changed
+        installationList = variantDetailsPage.getInstallationList();
+        rowNum = variantDetailsPage.findInstallationRow(ANDROID_INSTALLATION_TOKEN_ID);
+        assertNotEquals(rowNum, -1);
+        assertEquals(INSTALLATION_STATUS_DISABLED, installationList.get(rowNum).getStatus());
         variantDetailsPage.navigateToVariantsPage();
     }
 
@@ -612,11 +638,11 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
         assertTrue(!isEmpty(variantId) && !isEmpty(secret));
         // register installation
         Installation iosInstallation = new Installation(IOS_INSTALLATION_TOKEN_ID, IOS_INSTALLATION_DEVICE_TYPE,
-                IOS_INSTALLATION_OS, IOS_INSTALLATION_ALIAS, null, null, null);
+                IOS_INSTALLATION_OS, IOS_INSTALLATION_ALIAS, null, null, null, null);
         InstallationUtils.registerInstallation(contextRoot.toExternalForm(), variantId, secret, iosInstallation);
         // register second installation
         Installation secondiOSInstallation = new Installation(IOS_INSTALLATION_TOKEN_ID_2, IOS_INSTALLATION_DEVICE_TYPE,
-                IOS_INSTALLATION_OS, IOS_INSTALLATION_ALIAS, null, null, null);
+                IOS_INSTALLATION_OS, IOS_INSTALLATION_ALIAS, null, null, null, null);
         InstallationUtils.registerInstallation(contextRoot.toExternalForm(), variantId, secret, secondiOSInstallation);
         // go back to push app page
         variantDetailsPage.navigateToVariantsPage();
@@ -632,7 +658,7 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
         // wait until page is loaded
         variantDetailsPage.waitUntilPageIsLoaded();
         // two installations should exist
-        final List<Installation> installationList = variantDetailsPage.getInstallationList();
+        List<Installation> installationList = variantDetailsPage.getInstallationList();
         assertTrue(installationList != null && installationList.size() == 2);
         // the installations should have the right token ids
         assertTrue(variantDetailsPage.tokenIdExistsInList(IOS_INSTALLATION_TOKEN_ID, installationList)
@@ -643,6 +669,26 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
         // status should be enabled
         assertEquals(INSTALLATION_STATUS_ENABLED, installationList.get(0).getStatus());
         assertEquals(INSTALLATION_STATUS_ENABLED, installationList.get(1).getStatus());
+        int rowNum = variantDetailsPage.findInstallationRow(IOS_INSTALLATION_TOKEN_ID);
+        assertNotEquals(rowNum, -1);
+        // check installation details
+        variantDetailsPage.pressInstallationLink(rowNum);
+        // wait until installation details page is loaded
+        installationDetailsPage.waitUntilPageIsLoaded();
+        Installation installationDetails = installationDetailsPage.getInstallationDetails();
+        assertNotNull(installationDetails);
+        assertEquals(installationDetails.getDeviceToken(), IOS_INSTALLATION_TOKEN_ID);
+        assertEquals(installationDetails.getDeviceType(), IOS_INSTALLATION_DEVICE_TYPE);
+        assertEquals(installationDetails.getPlatform(), IOS_INSTALLATION_OS);
+        assertEquals(installationDetails.getAlias(), IOS_INSTALLATION_ALIAS);
+        installationDetailsPage.pressToggleLink();
+        installationDetailsPage.navigateToVariantPage();
+        variantDetailsPage.waitUntilPageIsLoaded();
+        // status should have been changed
+        installationList = variantDetailsPage.getInstallationList();
+        rowNum = variantDetailsPage.findInstallationRow(IOS_INSTALLATION_TOKEN_ID);
+        assertNotEquals(rowNum, -1);
+        assertEquals(INSTALLATION_STATUS_DISABLED, installationList.get(rowNum).getStatus());
         variantDetailsPage.navigateToVariantsPage();
     }
 
@@ -672,12 +718,13 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
         assertTrue(!isEmpty(variantId) && !isEmpty(secret));
         // register installation
         Installation spInstallation = new Installation(SIMPLE_PUSH_INSTALLATION_TOKEN_ID, SIMPLE_PUSH_INSTALLATION_DEVICE_TYPE,
-                SIMPLE_PUSH_INSTALLATION_OS, SIMPLE_PUSH_INSTALLATION_ALIAS, null, null, SIMPLE_PUSH_ENDPOINT_URL_1);
+                SIMPLE_PUSH_INSTALLATION_OS, SIMPLE_PUSH_INSTALLATION_ALIAS, null, null, SIMPLE_PUSH_ENDPOINT_URL_1,
+                SIMPLE_PUSH_CATEGORY);
         InstallationUtils.registerInstallation(contextRoot.toExternalForm(), variantId, secret, spInstallation);
         // register second installation
         Installation secondSpInstallation = new Installation(SIMPLE_PUSH_INSTALLATION_TOKEN_ID_2,
                 SIMPLE_PUSH_INSTALLATION_DEVICE_TYPE, SIMPLE_PUSH_INSTALLATION_OS, SIMPLE_PUSH_INSTALLATION_ALIAS, null, null,
-                SIMPLE_PUSH_ENDPOINT_URL_2);
+                SIMPLE_PUSH_ENDPOINT_URL_2, SIMPLE_PUSH_CATEGORY);
         InstallationUtils.registerInstallation(contextRoot.toExternalForm(), variantId, secret, secondSpInstallation);
         // go back to variants page
         variantDetailsPage.navigateToVariantsPage();
@@ -693,7 +740,7 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
         // wait until page is loaded
         variantDetailsPage.waitUntilPageIsLoaded();
         // two installations should exist
-        final List<Installation> installationList = variantDetailsPage.getInstallationList();
+        List<Installation> installationList = variantDetailsPage.getInstallationList();
         assertTrue(installationList != null && installationList.size() == 2);
         // the installations should have the right token ids
         assertTrue(variantDetailsPage.tokenIdExistsInList(SIMPLE_PUSH_INSTALLATION_TOKEN_ID, installationList)
@@ -704,6 +751,26 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
         // status should be enabled
         assertEquals(INSTALLATION_STATUS_ENABLED, installationList.get(0).getStatus());
         assertEquals(INSTALLATION_STATUS_ENABLED, installationList.get(1).getStatus());
+        int rowNum = variantDetailsPage.findInstallationRow(SIMPLE_PUSH_INSTALLATION_TOKEN_ID);
+        assertNotEquals(rowNum, -1);
+        // check installation details
+        variantDetailsPage.pressInstallationLink(rowNum);
+        // wait until installation details page is loaded
+        installationDetailsPage.waitUntilPageIsLoaded();
+        Installation installationDetails = installationDetailsPage.getInstallationDetails();
+        assertNotNull(installationDetails);
+        assertEquals(installationDetails.getDeviceToken(), SIMPLE_PUSH_INSTALLATION_TOKEN_ID);
+        assertEquals(installationDetails.getDeviceType(), SIMPLE_PUSH_INSTALLATION_DEVICE_TYPE);
+        assertEquals(installationDetails.getPlatform(), SIMPLE_PUSH_INSTALLATION_OS);
+        assertEquals(installationDetails.getAlias(), SIMPLE_PUSH_INSTALLATION_ALIAS);
+        installationDetailsPage.pressToggleLink();
+        installationDetailsPage.navigateToVariantPage();
+        variantDetailsPage.waitUntilPageIsLoaded();
+        // status should have been changed
+        installationList = variantDetailsPage.getInstallationList();
+        rowNum = variantDetailsPage.findInstallationRow(SIMPLE_PUSH_INSTALLATION_TOKEN_ID);
+        assertNotEquals(rowNum, -1);
+        assertEquals(INSTALLATION_STATUS_DISABLED, installationList.get(rowNum).getStatus());
         variantDetailsPage.navigateToPushAppsPage();
     }
 
@@ -761,7 +828,8 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
         // add the second Android variant
         variantsPage.addVariant();
         // register new (second) Android variant
-        variantRegistrationPage.registerAndroidVariant(ANDROID_VARIANT_NAME_2, ANDROID_VARIANT_DESC_2, ANDROID_VARIANT_GOOGLE_KEY_2);
+        variantRegistrationPage.registerAndroidVariant(ANDROID_VARIANT_NAME_2, ANDROID_VARIANT_DESC_2,
+                ANDROID_VARIANT_GOOGLE_KEY_2);
         // wait until page is loaded
         variantsPage.waitUntilPageIsLoaded();
         // five variants should exist
@@ -782,7 +850,7 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
         assertTrue(pushAppsList != null);
         assertEquals(5, pushAppsList.get(0).getVariants());
     }
-    
+
     @Test
     @InSequence(25)
     public void testSecondSimplePushVariantRegistration() {
@@ -814,7 +882,7 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
         assertTrue(pushAppsList != null);
         assertEquals(6, pushAppsList.get(0).getVariants());
     }
-    
+
     @Test
     @InSequence(26)
     public void testVariantRemoval() {
@@ -865,12 +933,12 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
     private static final String ANDROID_VARIANT_DESC = "My awesome variant!";
 
     private static final String ANDROID_VARIANT_GOOGLE_KEY = "IDDASDASDSAQ";
-    
+
     private static final String ANDROID_VARIANT_NAME_2 = "MyAndroidVariant2";
 
     private static final String ANDROID_VARIANT_DESC_2 = "My awesome second variant!";
 
-    private static final String ANDROID_VARIANT_GOOGLE_KEY_2 = "IDDASDASDSAQ2";    
+    private static final String ANDROID_VARIANT_GOOGLE_KEY_2 = "IDDASDASDSAQ2";
 
     private static final String UPDATED_ANDROID_VARIANT_NAME = "MyNewAndroidVariant";
 
@@ -897,10 +965,10 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
     private static final String SIMPLE_PUSH_VARIANT_NAME = "MySimplePushVariant";
 
     private static final String SIMPLE_PUSH_VARIANT_DESC = "My awesome SimplePush variant!";
-    
+
     private static final String SIMPLE_PUSH_VARIANT_NAME_2 = "MySimplePushVariant2";
 
-    private static final String SIMPLE_PUSH_VARIANT_DESC_2 = "My awesome second SimplePush variant!";    
+    private static final String SIMPLE_PUSH_VARIANT_DESC_2 = "My awesome second SimplePush variant!";
 
     private static final String UPDATED_SIMPLE_PUSH_VARIANT_NAME = "MySimplePushVariant";
 
@@ -940,6 +1008,8 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
 
     private static final String SIMPLE_PUSH_INSTALLATION_ALIAS = "qa@example.com";
 
+    private static final String SIMPLE_PUSH_CATEGORY = "web";
+
     private static final String IOS_PLATFORM = "IOS";
 
     private static final String ANDROID_PLATFORM = "ANDROID";
@@ -947,6 +1017,8 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
     private static final String SIMPLE_PUSH_PLATFORM = "MozillaOS";
 
     private static final String INSTALLATION_STATUS_ENABLED = "Enabled";
+    
+    private static final String INSTALLATION_STATUS_DISABLED = "Disabled";
 
     /* -- Testing data section -- */
 }

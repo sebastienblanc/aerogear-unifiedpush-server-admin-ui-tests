@@ -37,7 +37,7 @@ public class Installation {
     private String simplePushEndpoint;
 
     public Installation(String deviceToken, String deviceType, String operatingSystem, String alias, String platform,
-            String status, String simplePushEndpoint) {
+            String status, String simplePushEndpoint, String category) {
         this.deviceToken = deviceToken;
         this.deviceType = deviceType;
         this.operatingSystem = operatingSystem;
@@ -45,6 +45,7 @@ public class Installation {
         this.platform = platform;
         this.status = status;
         this.simplePushEndpoint = simplePushEndpoint;
+        this.category = category;
     }
 
     public String getSimplePushEndpoint() {

@@ -41,7 +41,7 @@ public class VariantDetailsPage extends PushServerAdminUiPage {
     @FindBy(id = "mobile-application-variant-table")
     private WebElement MOBILE_INSTALLATIONS_TABLE_CONTAINER;
 
-    @FindByJQuery("#mobile-application-variant-table table tr")
+    @FindByJQuery("#mobile-application-variant-table table tbody tr")
     private List<WebElement> MOBILE_INSTALLATION_ROWS;
 
     @FindByJQuery("div.content div:eq(1) a:eq(0)")
@@ -70,6 +70,23 @@ public class VariantDetailsPage extends PushServerAdminUiPage {
         return SECRET.getText();
     }
 
+    public void pressInstallationLink(int rowNum) {
+        final List<WebElement> anchors = MOBILE_INSTALLATION_ROWS.get(rowNum).findElements(By.tagName("a"));
+        anchors.get(0).click();
+    }
+
+    public int findInstallationRow(String token) {
+        final List<Installation> installationsList = getInstallationList();
+        if (token != null && installationsList != null && !installationsList.isEmpty()) {
+            for (int i = 0; i < installationsList.size(); i++) {
+                if (token.equals(installationsList.get(i).getDeviceToken())) {
+                    return i;
+                }
+            }
+        }
+        return -1;
+    }
+    
     public List<Installation> getInstallationList() {
         final List<Installation> installationList = new ArrayList<Installation>();
         for (WebElement row : MOBILE_INSTALLATION_ROWS) {
@@ -79,7 +96,7 @@ public class VariantDetailsPage extends PushServerAdminUiPage {
                 final String device = tableDataList.get(1).getText();
                 final String platform = tableDataList.get(2).getText();
                 final String status = tableDataList.get(3).getText();
-                installationList.add(new Installation(token, device, null, null, platform, status, null));
+                installationList.add(new Installation(token, device, null, null, platform, status, null, null));
             }
         }
         return installationList;

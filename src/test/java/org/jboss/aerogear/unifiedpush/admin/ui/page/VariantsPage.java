@@ -20,7 +20,6 @@ import static org.jboss.arquillian.graphene.Graphene.waitModel;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import org.jboss.aerogear.unifiedpush.admin.ui.model.AbstractVariant;
 import org.jboss.arquillian.graphene.findby.FindByJQuery;
@@ -147,6 +146,6 @@ public class VariantsPage extends PushServerAdminUiPage {
 
     @Override
     public void waitUntilPageIsLoaded() {
-        waitModel().withTimeout(10, TimeUnit.SECONDS).until().element(ADD_VARIANT_BUTTON).is().visible();
+        waitModel().until().element(ADD_VARIANT_BUTTON).is().visible();
     }
 }
