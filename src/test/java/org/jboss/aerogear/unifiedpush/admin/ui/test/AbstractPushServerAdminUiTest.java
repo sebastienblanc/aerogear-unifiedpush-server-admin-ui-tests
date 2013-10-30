@@ -42,7 +42,7 @@ public abstract class AbstractPushServerAdminUiTest {
     protected WebDriver driver;
 
     /**
-     * Deploys the {@link Archive} on teh AS.
+     * Deploys the {@link Archive} on the AS.
      * 
      * @return An {@link Archive}.
      */
@@ -52,7 +52,7 @@ public abstract class AbstractPushServerAdminUiTest {
     }
 
     /**
-     * Initializes the page url.
+     * Initializes the page URL.
      */
     public void initializePageUrl() {
         try {

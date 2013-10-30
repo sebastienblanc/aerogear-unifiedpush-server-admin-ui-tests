@@ -20,12 +20,15 @@ import static org.jboss.arquillian.graphene.Graphene.waitModel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.jboss.aerogear.unifiedpush.admin.ui.model.Installation;
 import org.jboss.arquillian.graphene.findby.FindByJQuery;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
+
+import com.google.common.base.Predicate;
 
 public class VariantDetailsPage extends PushServerAdminUiPage {
 
@@ -38,10 +41,10 @@ public class VariantDetailsPage extends PushServerAdminUiPage {
     @FindByJQuery("div.content section span.rcue-code:eq(1)")
     private WebElement SECRET;
 
-    @FindBy(id = "mobile-application-variant-table")
+    @FindByJQuery("div#mobile-application-variant-table")
     private WebElement MOBILE_INSTALLATIONS_TABLE_CONTAINER;
 
-    @FindByJQuery("#mobile-application-variant-table table tbody tr")
+    @FindByJQuery("div#mobile-application-variant-table table.rcue-table tbody tr")
     private List<WebElement> MOBILE_INSTALLATION_ROWS;
 
     @FindByJQuery("div.content div:eq(1) a:eq(0)")
@@ -115,6 +118,17 @@ public class VariantDetailsPage extends PushServerAdminUiPage {
 
     @Override
     public void waitUntilPageIsLoaded() {
-        waitModel().until().element(MOBILE_INSTALLATIONS_TABLE_CONTAINER).is().visible();
+    	super.waitUntilPageIsLoaded();
+        waitModel().pollingEvery(1, TimeUnit.SECONDS).until().element(MOBILE_INSTALLATIONS_TABLE_CONTAINER).is().present();
     }
+    
+    public void waitUntilRowsAreLoaded(final int numOfRows) {
+        waitModel().until(new Predicate<WebDriver>() {
+            @Override
+            public boolean apply(WebDriver input) {
+                return MOBILE_INSTALLATION_ROWS.size() == numOfRows;
+            }
+		});
+    }
+
 }

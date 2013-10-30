@@ -19,6 +19,7 @@ package org.jboss.aerogear.unifiedpush.admin.ui.page;
 import static org.jboss.arquillian.graphene.Graphene.waitModel;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.jboss.aerogear.unifiedpush.admin.ui.model.Installation;
 import org.jboss.arquillian.graphene.findby.FindByJQuery;
@@ -40,6 +41,9 @@ public class InstallationDetailsPage extends PushServerAdminUiPage {
     @FindByJQuery("div#mobile-application-variant-table table tbody tr")
     private WebElement INSTALLATION_DETAILS;
 
+    @FindByJQuery("div#mobile-application-variant-table table.rcue-table tbody tr:eq(0) td:eq(4)")
+    private WebElement STATUS_FIELD;
+    
     @FindByJQuery("div.content div:eq(1) a:eq(1)")
     private WebElement BREADCRUMB_VARIANTS_LINK;
     
@@ -57,6 +61,7 @@ public class InstallationDetailsPage extends PushServerAdminUiPage {
     public void pressToggleLink() {
         final WebElement toggleAnchor = INSTALLATION_DETAILS.findElement(By.tagName("a"));
         toggleAnchor.click();
+        waitModel().pollingEvery(1, TimeUnit.SECONDS).until().element(STATUS_FIELD).text().contains("Disabled");
     }
 
     public Installation getInstallationDetails() {
@@ -75,7 +80,10 @@ public class InstallationDetailsPage extends PushServerAdminUiPage {
     }
 
     public String getToken() {
-        return TOKEN.getText().substring("Device Token: ".length()).trim();
+        String partialyParsed = TOKEN.getText().substring("Device Token: ".length()).trim();
+        int newLinePosition = partialyParsed.indexOf("\n");
+        String finalParse = partialyParsed.substring(0, newLinePosition);
+        return finalParse;
     }
 
     public String getHeaderTitle() {
@@ -84,6 +92,7 @@ public class InstallationDetailsPage extends PushServerAdminUiPage {
 
     @Override
     public void waitUntilPageIsLoaded() {
-        waitModel().until().element(INSTALLATION_DETAILS_TABLE).is().visible();
+    	super.waitUntilPageIsLoaded();
+    	waitModel().pollingEvery(1, TimeUnit.SECONDS).until().element(INSTALLATION_DETAILS_TABLE).is().present();
     }
 }

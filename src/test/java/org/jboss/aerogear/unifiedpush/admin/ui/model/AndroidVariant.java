@@ -18,8 +18,8 @@ package org.jboss.aerogear.unifiedpush.admin.ui.model;
 
 public class AndroidVariant extends AbstractVariant {
 
-    public AndroidVariant(String name, String description, int installations, String googleKey) {
-        super(name, description, VariantType.ANDROID.getTypeName(), installations);
+    public AndroidVariant(String name, String projectNumber, String description, int installations, String googleKey) {
+        super(name, projectNumber, description, VariantType.ANDROID.getTypeName(), installations);
         this.googleKey = googleKey;
     }
 

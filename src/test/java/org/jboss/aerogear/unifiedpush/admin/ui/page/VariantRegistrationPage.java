@@ -35,8 +35,11 @@ public class VariantRegistrationPage extends PushServerAdminUiPage {
     @FindByJQuery("div.rcue-dialog-inner form section:eq(0) input[type=\"radio\"][name=\"platform\"][value=\"android\"]]")
     private WebElement RADIO_BUTTON_ANDROID;
 
-    @FindByJQuery("div.rcue-dialog-inner form section:eq(0) input[type=\"text\"]")
+    @FindByJQuery("div.rcue-dialog-inner form section:eq(0) input[type=\"text\"]:eq(0)")
     private WebElement GOOGLE_API_KEY_INPUT_FIELD;
+    
+    @FindByJQuery("div.rcue-dialog-inner form section:eq(0) input[type=\"text\"]:eq(1)")
+    private WebElement ANDROID_PROJECT_NUMBER;
 
     @FindByJQuery("div.rcue-dialog-inner form section:eq(1) input[type=\"radio\"][name=\"platform\"][value=\"iOS\"]]")
     private WebElement RADIO_BUTTON_APPLE;
@@ -56,10 +59,11 @@ public class VariantRegistrationPage extends PushServerAdminUiPage {
     @FindByJQuery("div.rcue-dialog-inner form section:eq(1) input[type=\"checkbox\"]")
     private WebElement IOS_PRODUCTION_FLAG_CHECKBOX;
 
-    public void registerAndroidVariant(String name, String desc, String googleApiKey) {
+    public void registerAndroidVariant(String name, String desc, String projectNumber, String googleApiKey) {
         fillVariantDetails(name, desc);
         selectPlatform(PLATFORM.ANDROID);
         clearNfill(GOOGLE_API_KEY_INPUT_FIELD, googleApiKey);
+        clearNfill(ANDROID_PROJECT_NUMBER, projectNumber);
         submitForm();
     }
 

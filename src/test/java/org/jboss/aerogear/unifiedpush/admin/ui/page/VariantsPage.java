@@ -97,13 +97,13 @@ public class VariantsPage extends PushServerAdminUiPage {
             for (WebElement row : VARIANTS_LIST) {
                 if (row != null) {
                     final List<WebElement> tableDataList = row.findElements(By.tagName("td"));
-                    if (tableDataList != null && tableDataList.size() == 6) {
+                    if (tableDataList != null && tableDataList.size() == 7) {
                         final String name = tableDataList.get(0).getText();
-                        final String desc = tableDataList.get(1).getText();
-                        final String type = tableDataList.get(2).getText();
-                        final int installations = Integer.valueOf(tableDataList.get(3).getText());
-                        // System.out.println("name: " + name + " desc: " + desc + " vars " + vars);
-                        variantList.add(new AbstractVariant(name, desc, type, installations));
+                        final String projectNumber = tableDataList.get(1).getText();
+                        final String desc = tableDataList.get(2).getText();
+                        final String type = tableDataList.get(3).getText();
+                        final int installations = Integer.valueOf(tableDataList.get(4).getText());
+                        variantList.add(new AbstractVariant(name, projectNumber, desc, type, installations));
                     }
                 }
             }
@@ -135,7 +135,7 @@ public class VariantsPage extends PushServerAdminUiPage {
             for (WebElement row : VARIANTS_LIST) {
                 if (row != null) {
                     final List<WebElement> tableDataList = row.findElements(By.tagName("td"));
-                    if (tableDataList != null && tableDataList.size() == 6) {
+                    if (tableDataList != null && tableDataList.size() == 7) {
                         rowList.add(row);
                     }
                 }

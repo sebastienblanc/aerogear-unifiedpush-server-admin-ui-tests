@@ -218,17 +218,19 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
         assertTrue("initially there are zero variants", variantsPage.countVariants() == 0);
         // add a new variant
         variantsPage.addVariant();
+        variantRegistrationPage.waitUntilPageIsLoaded();
         // register new android variant
-        variantRegistrationPage.registerAndroidVariant(ANDROID_VARIANT_NAME, ANDROID_VARIANT_DESC, ANDROID_VARIANT_GOOGLE_KEY);
+        variantRegistrationPage.registerAndroidVariant(ANDROID_VARIANT_NAME, ANDROID_VARIANT_DESC, ANDROID_VARIANT_PROJECT_NUMBER, ANDROID_VARIANT_GOOGLE_KEY);
         // wait until page is loaded
         variantsPage.waitUntilPageIsLoaded();
         // One variant should exist
         final List<AbstractVariant> variantList = variantsPage.getVariantList();
         // one variant should exist
-        assertTrue(variantList != null);
+        assertTrue(variantList != null && variantList.size() == 1);
         final int variantPositionInList = variantsPage.findVariantRow(ANDROID_VARIANT_NAME);
         assertTrue(variantPositionInList != -1);
         assertEquals(ANDROID_VARIANT_NAME, variantList.get(variantPositionInList).getName());
+        assertEquals(ANDROID_VARIANT_PROJECT_NUMBER, variantList.get(variantPositionInList).getProjectNumber());
         assertEquals(ANDROID_VARIANT_DESC, variantList.get(variantPositionInList).getDescription());
         assertEquals(VariantType.ANDROID, variantList.get(variantPositionInList).getVariantType());
         assertEquals(0, variantList.get(variantPositionInList).getInstallations());
@@ -547,7 +549,7 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
         variantDetailsPage.waitUntilPageIsLoaded();
         // title should contain the variant name
         assertTrue(variantDetailsPage.getHeaderTitle().contains(UPDATED_ANDROID_VARIANT_NAME));
-        // variant id and secre should exist
+        // variant id and secret should exist
         final String variantId = variantDetailsPage.getVariantId();
         final String secret = variantDetailsPage.getSecret();
         assertTrue(!isEmpty(variantId) && !isEmpty(secret));
@@ -602,10 +604,13 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
         assertEquals(installationDetails.getPlatform(), ANDROID_INSTALLATION_OS);
         assertEquals(installationDetails.getAlias(), ANDROID_INSTALLATION_ALIAS);
         installationDetailsPage.pressToggleLink();
+        installationDetailsPage.waitUntilPageIsLoaded();
         installationDetailsPage.navigateToVariantPage();
-        variantDetailsPage.waitUntilPageIsLoaded();
+        //variantDetailsPage.waitUntilPageIsLoaded();
+        variantDetailsPage.waitUntilRowsAreLoaded(2);
         // status should have been changed
         installationList = variantDetailsPage.getInstallationList();
+        assertEquals(2, installationList.size());
         rowNum = variantDetailsPage.findInstallationRow(ANDROID_INSTALLATION_TOKEN_ID);
         assertNotEquals(rowNum, -1);
         assertEquals(INSTALLATION_STATUS_DISABLED, installationList.get(rowNum).getStatus());
@@ -682,8 +687,9 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
         assertEquals(installationDetails.getPlatform(), IOS_INSTALLATION_OS);
         assertEquals(installationDetails.getAlias(), IOS_INSTALLATION_ALIAS);
         installationDetailsPage.pressToggleLink();
+        installationDetailsPage.waitUntilPageIsLoaded();
         installationDetailsPage.navigateToVariantPage();
-        variantDetailsPage.waitUntilPageIsLoaded();
+        variantDetailsPage.waitUntilRowsAreLoaded(2);
         // status should have been changed
         installationList = variantDetailsPage.getInstallationList();
         rowNum = variantDetailsPage.findInstallationRow(IOS_INSTALLATION_TOKEN_ID);
@@ -712,7 +718,7 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
         variantDetailsPage.waitUntilPageIsLoaded();
         // title should contain the variant name
         assertTrue(variantDetailsPage.getHeaderTitle().contains(UPDATED_SIMPLE_PUSH_VARIANT_NAME));
-        // variant id and secre should exist
+        // variant id and secret should exist
         final String variantId = variantDetailsPage.getVariantId();
         final String secret = variantDetailsPage.getSecret();
         assertTrue(!isEmpty(variantId) && !isEmpty(secret));
@@ -828,7 +834,8 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
         // add the second Android variant
         variantsPage.addVariant();
         // register new (second) Android variant
-        variantRegistrationPage.registerAndroidVariant(ANDROID_VARIANT_NAME_2, ANDROID_VARIANT_DESC_2,
+        variantRegistrationPage.waitUntilPageIsLoaded();
+        variantRegistrationPage.registerAndroidVariant(ANDROID_VARIANT_NAME_2, ANDROID_VARIANT_DESC_2, ANDROID_VARIANT_PROJECT_NUMBER,
                 ANDROID_VARIANT_GOOGLE_KEY_2);
         // wait until page is loaded
         variantsPage.waitUntilPageIsLoaded();
@@ -864,6 +871,7 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
         assertTrue("there has to be already five variants registered", variantsPage.countVariants() == 5);
         // add the second SimplePush variant
         variantsPage.addVariant();
+        variantRegistrationPage.waitUntilPageIsLoaded();
         // register it
         variantRegistrationPage.registerSimplePushVariant(SIMPLE_PUSH_VARIANT_NAME_2, SIMPLE_PUSH_VARIANT_DESC_2);
         variantsPage.waitUntilPageIsLoaded();
@@ -931,6 +939,8 @@ public class PushServerAdminUiTestCase extends AbstractPushServerAdminUiTest {
     private static final String ANDROID_VARIANT_NAME = "MyAndroidVariant";
 
     private static final String ANDROID_VARIANT_DESC = "My awesome variant!";
+    
+    private static final String ANDROID_VARIANT_PROJECT_NUMBER = "123";
 
     private static final String ANDROID_VARIANT_GOOGLE_KEY = "IDDASDASDSAQ";
 

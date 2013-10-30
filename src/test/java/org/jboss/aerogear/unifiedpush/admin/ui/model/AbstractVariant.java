@@ -23,6 +23,8 @@ public class AbstractVariant {
     private VariantType variantType;
 
     private String name;
+    
+    private String projectNumber;
 
     private String description;
 
@@ -32,8 +34,9 @@ public class AbstractVariant {
 
     private String developer;
 
-    public AbstractVariant(String name, String description, String type, int installations) {
+    public AbstractVariant(String name, String projectNumber, String description, String type, int installations) {
         this.name = name;
+        this.projectNumber = projectNumber;
         this.description = description;
         this.setVariantType(VariantType.ANDROID.getTypeName().equalsIgnoreCase(type) ? VariantType.ANDROID : VariantType.IOS
                 .getTypeName().equalsIgnoreCase(type) ? VariantType.IOS : VariantType.SIMPLE_PUSH);
@@ -54,6 +57,14 @@ public class AbstractVariant {
 
     public void setName(String name) {
         this.name = name;
+    }
+    
+    public String getProjectNumber() {
+        return projectNumber;
+    }
+
+    public void setProjectNumber(String projectNumber) {
+        this.projectNumber = projectNumber;
     }
 
     public String getDescription() {
