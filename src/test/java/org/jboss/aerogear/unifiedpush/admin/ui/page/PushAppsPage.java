@@ -20,6 +20,7 @@ import static org.jboss.arquillian.graphene.Graphene.waitModel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.jboss.aerogear.unifiedpush.admin.ui.model.PushApplication;
 import org.jboss.arquillian.graphene.findby.FindByJQuery;
@@ -139,7 +140,7 @@ public class PushAppsPage extends PushServerAdminUiPage {
 
     @Override
     public void waitUntilPageIsLoaded() {
-        waitModel().until().element(PUSH_APPLICATION_TABLE).is().visible();
+        waitModel().pollingEvery(1, TimeUnit.SECONDS).until().element(PUSH_APPLICATION_TABLE).is().present();
     }
 
     public void waitUntilTableContainsRows(final int numOfRows) {

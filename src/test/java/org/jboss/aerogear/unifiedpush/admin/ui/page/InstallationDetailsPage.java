@@ -24,8 +24,10 @@ import java.util.concurrent.TimeUnit;
 import org.jboss.aerogear.unifiedpush.admin.ui.model.Installation;
 import org.jboss.arquillian.graphene.findby.FindByJQuery;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 
 public class InstallationDetailsPage extends PushServerAdminUiPage {
 
@@ -90,9 +92,24 @@ public class InstallationDetailsPage extends PushServerAdminUiPage {
         return HEADER_TITLE.getText();
     }
 
+	private List<WebElement> filterInstallationRows() {
+		return null;
+	}
+    
     @Override
     public void waitUntilPageIsLoaded() {
     	super.waitUntilPageIsLoaded();
     	waitModel().pollingEvery(1, TimeUnit.SECONDS).until().element(INSTALLATION_DETAILS_TABLE).is().present();
+    	waitModel().pollingEvery(1, TimeUnit.SECONDS).until().element(INSTALLATION_DETAILS).is().present();
     }
+
+	public void waitUntilTableContainsRows(final int numOfRows) {
+        waitModel().until(new ExpectedCondition<Boolean>() {
+            @Override
+            public Boolean apply(WebDriver notUsed) {
+                final List<WebElement> list = filterInstallationRows();
+                return list != null && list.size() == numOfRows;
+            }
+        });  	
+	}
 }

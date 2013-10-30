@@ -20,15 +20,18 @@ import static org.jboss.arquillian.graphene.Graphene.waitModel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.jboss.aerogear.unifiedpush.admin.ui.model.AbstractVariant;
 import org.jboss.arquillian.graphene.findby.FindByJQuery;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 
 public class VariantsPage extends PushServerAdminUiPage {
 
-    @FindByJQuery("table.rcue-table thead div.topcoat-button a")
+    @FindByJQuery("table.rcue-table thead div.table-create-btn a")
     private WebElement ADD_VARIANT_BUTTON;
 
     @FindByJQuery("div.content section h2")
@@ -146,6 +149,16 @@ public class VariantsPage extends PushServerAdminUiPage {
 
     @Override
     public void waitUntilPageIsLoaded() {
-        waitModel().until().element(ADD_VARIANT_BUTTON).is().visible();
+        waitModel().pollingEvery(1, TimeUnit.SECONDS).until().element(ADD_VARIANT_BUTTON).is().present();
+    }
+    
+    public void waitUntilTableContainsRows(final int numOfRows) {
+        waitModel().until(new ExpectedCondition<Boolean>() {
+            @Override
+            public Boolean apply(WebDriver notUsed) {
+                final List<WebElement> list = filterVariantRows();
+                return list != null && list.size() == numOfRows;
+            }
+        });    	
     }
 }
