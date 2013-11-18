@@ -35,10 +35,10 @@ public class VariantDetailsPage extends PushServerAdminUiPage {
     @FindByJQuery("div.content section h2")
     private WebElement HEADER_TITLE;
 
-    @FindByJQuery("div.content section span.rcue-code:eq(0)")
+    @FindByJQuery("div.content section input.rcue-code:eq(0)")
     private WebElement VARIANT_ID;
 
-    @FindByJQuery("div.content section span.rcue-code:eq(1)")
+    @FindByJQuery("div.content section input.rcue-code:eq(1)")
     private WebElement SECRET;
 
     @FindByJQuery("div#mobile-application-variant-table")
@@ -66,11 +66,11 @@ public class VariantDetailsPage extends PushServerAdminUiPage {
     }
 
     public String getVariantId() {
-        return VARIANT_ID.getText();
+        return VARIANT_ID.getAttribute("value");
     }
 
     public String getSecret() {
-        return SECRET.getText();
+        return SECRET.getAttribute("value");
     }
 
     public void pressInstallationLink(int rowNum) {

@@ -37,10 +37,10 @@ public class VariantsPage extends PushServerAdminUiPage {
     @FindByJQuery("div.content section h2")
     private WebElement HEADER_TITLE;
 
-    @FindByJQuery("div.content section span.rcue-code:eq(0)")
+    @FindByJQuery("div.content section input.rcue-code:eq(0)")
     private WebElement APPLICATION_ID;
 
-    @FindByJQuery("div.content section span.rcue-code:eq(1)")
+    @FindByJQuery("div.content section input.rcue-code:eq(1)")
     private WebElement MASTER_SECRET;
 
     @FindByJQuery("table.rcue-table tbody tr")
@@ -62,11 +62,11 @@ public class VariantsPage extends PushServerAdminUiPage {
     }
 
     public String getApplicationId() {
-        return APPLICATION_ID.getText();
+        return APPLICATION_ID.getAttribute("value");
     }
 
     public String getMasterSecret() {
-        return MASTER_SECRET.getText();
+        return MASTER_SECRET.getAttribute("value");
     }
 
     public int countVariants() {

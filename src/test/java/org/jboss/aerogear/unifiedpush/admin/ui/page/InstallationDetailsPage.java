@@ -46,10 +46,10 @@ public class InstallationDetailsPage extends PushServerAdminUiPage {
     @FindByJQuery("div#mobile-application-variant-table table.rcue-table tbody tr:eq(0) td:eq(4)")
     private WebElement STATUS_FIELD;
     
-    @FindByJQuery("div.content div:eq(1) a:eq(1)")
+    @FindByJQuery("div.content div:eq(0) a:eq(1)")
     private WebElement BREADCRUMB_VARIANTS_LINK;
     
-    @FindByJQuery("div.content div:eq(1) a:eq(2)")
+    @FindByJQuery("div.content div:eq(0) a:eq(2)")
     private WebElement BREADCRUMB_VARIANT_LINK;
 
     public void navigateToVariantPage() {
